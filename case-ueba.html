@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Encyclopedia to Learning Experience — Case Study · Kate Scaife</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,600&family=Public+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_case_style.css">
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="index.html">← Kate Scaife · portfolio</a>
+<p class="eyebrow">Case study · Content transformation</p>
+<h1>From encyclopedia to learning experience: converting a 25-page SME brain dump</h1>
+<p class="meta">11-module micro-learning series · 3 role-based journeys · 5-star rating · 500+ completions</p>
+
+<h2>The ask</h2>
+<p>A subject-matter expert wrote down everything a solutions architect would need to know about a behavioral analytics security product (UEBA) — 25 pages of it. The content was technically excellent and genuinely comprehensive. Leadership needed learning built from it for the field's enablement plan, serving three audiences: sales, sales engineers, and solutions architects.</p>
+
+<h2>The diagnosis</h2>
+<p>The document wasn't wrong anywhere — it just wasn't a learning experience. Three specific problems:</p>
+<ul>
+<li><strong>It was organized like an encyclopedia.</strong> Encyclopedias are great when you already know what you're looking for. Learners, by definition, don't. The structure served retrieval, not acquisition.</li>
+<li><strong>The discovery section was a flat list of sample questions.</strong> No logic connecting symptom to consequence — a rep could recite the questions without understanding why any answer mattered or where it should lead next.</li>
+<li><strong>The technical depth had no "so what."</strong> An entity risk score update was documented as a formula, full stop. Accurate, and useless to someone who needs to explain to a customer why it matters to them.</li>
+</ul>
+
+<h2>The design decisions</h2>
+<ul>
+<li><strong>Split prerequisite from reference — don't make one artifact do two jobs.</strong> The original doc, lightly revised, stayed alive as the reference material — the thing you search when you already know what you need. The learning became a separate micro-learning series of 11 modules — the prerequisite that builds the mental model first. Killing the doc would have destroyed real value; the fix was giving each format the job it's good at.</li>
+<li><strong>Route by role, not one path for everyone.</strong> An HTML front door recommended and linked specific modules for each audience — sales, SEs, and SAs each got a tailored journey through the same series instead of a single fire-hose sequence.</li>
+<li><strong>Give discovery a logic, not a list.</strong> The flat question list became <span class="mark">an iceberg</span>: the customer's visible symptom at the surface, the deeper operational and business consequences beneath it. The imagery did real instructional work — a rep who understands the iceberg can generate their own questions instead of reciting ours.</li>
+<li><strong>Turn the demo link into a discipline.</strong> The original pointed to a Navattic click-through and stopped. The module rebuilt demoing as <strong>show → explain → validate</strong>: show the capability, explain what the customer is seeing and why it matters to them, validate against the customer's own environment and pain.</li>
+<li><strong>Put troubleshooting where the trouble happens.</strong> Instead of a troubleshooting section at the back, field-relevant warnings were interwoven as "here's what to know and watch for" callouts inside the module where each issue actually arises — knowledge in the flow of the concept, not appended to it.</li>
+<li><strong>Diagram the architecture as a story.</strong> Simple, clean diagrams walked component pipelines from <em>what it is</em> → <em>why it matters</em> → <em>how you use it</em> — the same arc every module followed.</li>
+</ul>
+
+
+<h2>The pattern, live</h2>
+<p>Rather than show screenshots of employer materials, here's the interactive-diagram pattern itself, recreated generically: a behavioral-analytics pipeline where each stage answers <em>what it is → why it matters → what to watch for</em>. Click a stage.</p>
+
+<div class="pipe" role="group" aria-label="Behavioral analytics pipeline diagram">
+  <div class="pipe-row">
+    <button class="node" data-i="0">Ingestion</button><span class="arrow">→</span>
+    <button class="node" data-i="1">Normalization</button><span class="arrow">→</span>
+    <button class="node" data-i="2">Baselines</button><span class="arrow">→</span>
+    <button class="node" data-i="3">Detection</button><span class="arrow">→</span>
+    <button class="node" data-i="4">Risk Index</button>
+  </div>
+  <div class="node-detail" id="nodeDetail" aria-live="polite">
+    <p class="nd-hint">Select a pipeline stage to explore it.</p>
+  </div>
+</div>
+
+<style>
+.pipe{border:1px solid var(--line);border-radius:12px;padding:20px 18px;margin:20px 0 28px;background:var(--paper)}
+.pipe-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.node{font-family:"IBM Plex Mono",monospace;font-size:13px;padding:10px 14px;border-radius:8px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;transition:border-color .12s, transform .12s}
+.node:hover{border-color:var(--lav);transform:translateY(-1px)}
+.node.active{background:var(--dark);color:#EAE6F2;border-color:var(--dark)}
+.node:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.arrow{color:var(--ink-soft);font-family:"IBM Plex Mono",monospace}
+.node-detail{margin-top:16px;border-top:1px dashed var(--line);padding-top:16px;min-height:120px}
+.nd-hint{color:var(--ink-soft);font-style:italic}
+.nd-title{font-family:"Fraunces",serif;font-weight:600;font-size:20px;margin-bottom:8px;color:var(--ink)}
+.nd-block{margin-bottom:10px}
+.nd-label{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.nd-watch{border-left:3px solid var(--lav);background:var(--mark-soft);padding:8px 12px;border-radius:0 8px 8px 0;font-size:15px}
+</style>
+
+<script>
+const STAGES = [
+ {t:"Ingestion", what:"Raw activity logs — identity, endpoint, network, application — flow into the pipeline from their sources.", why:"The model can only baseline behavior it can see. Gaps at this stage don't error out; they become silent blind spots downstream.", watch:"If events stop appearing, verify the forwarder's output configuration before questioning the analytics — the most common failure is the plumbing, not the math."},
+ {t:"Normalization", what:"Events are parsed into a common schema: who did what, where, and when.", why:"Behavioral analytics compares actions across wildly different sources. Mismatched fields mean broken comparisons.", watch:"A newly added log source with unmapped fields will quietly degrade detections rather than announce itself. Validate mappings when anything new comes online."},
+ {t:"Behavioral baselines", what:"Batch processing computes each user's and entity's normal: typical hours, hosts, data volumes, peer group behavior.", why:"\"Unusual\" only means something relative to normal — this stage is the definition of normal.", watch:"Baselines need a training window. Judging alert quality on day two means judging a model that hasn't met your users yet."},
+ {t:"Real-time detection", what:"Incoming events are scored against baselines and rules as they arrive; anomalies become findings.", why:"This is where analytics turns into action — and where speed matters for containment.", watch:"Threshold tuning here is a judgment call, not a setting: every notch trades missed signal against analyst fatigue. Decide with the SOC, not for them."},
+ {t:"Risk index", what:"Findings aggregate into an entity risk score that rises with corroborating evidence and decays over time.", why:"A single anomaly is noise; a pattern of findings is a story. The score tells analysts where to look first.", watch:"Customers trust the score only if they can see why it moved. A number without a narrative erodes confidence — always be able to tell the story behind the spike."}
+];
+const nodes = document.querySelectorAll('.node');
+const detail = document.getElementById('nodeDetail');
+nodes.forEach(btn => btn.addEventListener('click', () => {
+  nodes.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const s = STAGES[+btn.dataset.i];
+  detail.innerHTML = '<p class="nd-title">' + s.t + '</p>' +
+    '<div class="nd-block"><span class="nd-label">What it is</span><p>' + s.what + '</p></div>' +
+    '<div class="nd-block"><span class="nd-label">Why it matters</span><p>' + s.why + '</p></div>' +
+    '<div class="nd-watch">⚠ <strong>Watch for:</strong> ' + s.watch + '</div>';
+}));
+</script>
+
+<h2>An honest note on tooling</h2>
+<p>The series was built in Articulate Rise — nothing technically groundbreaking, and that's rather the point. The transformation was <span class="mark">information architecture and pedagogy</span>: deciding what the doc should stop trying to do, sequencing for a mental model, and connecting every technical fact to a field conversation. The tool was incidental.</p>
+
+<h2>Outcome</h2>
+<p>The series currently holds a <strong>5-star learner rating with over 500 completions</strong>, shipped as designed: micro-learning as the prerequisite, the revised original doc as the reference.</p>
+<div class="pull">The quieter outcome mattered just as much: this was my first project with this SME, and the transformation made her a full convert to what instructional design brings. <span>We've partnered on several projects since — expertise flowing in, learning experiences flowing out, trust compounding.</span></div>
+
+<footer>Kate Scaife · <a href="mailto:krscaife@gmail.com">krscaife@gmail.com</a> · <a href="index.html">Back to portfolio</a></footer>
+</div>
+</body>
+</html>

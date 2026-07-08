@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal &amp; Noise — A Detection Curation Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#221C36; --panel:#2C2547; --panel2:#362E54; --line:#4A4070;
+  --text:#EDE9F5; --dim:#A79FC2; --amber:#C4ADE8; --amber-dim:#7B6B99;
+  --good:#4CC38A; --bad:#E5654E; --warn:#E8C468;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.55}
+h1,h2,h3,.btn{font-family:"Space Grotesk",sans-serif}
+.wrap{max-width:1060px;margin:0 auto;padding:0 18px}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+/* header */
+header{position:sticky;top:0;z-index:5;background:rgba(34,28,54,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(4px)}
+.hud{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:12px 0}
+.brand{font-family:"Space Grotesk";font-weight:700;font-size:16px;letter-spacing:.02em}
+.brand span{color:var(--amber)}
+.stat{font-size:12.5px;color:var(--dim)}
+.stat b{color:var(--text);font-size:15px;font-weight:600}
+#timer b{color:var(--amber)}
+#timer.low b{color:var(--bad)}
+.load{flex:1;min-width:220px}
+.load .lbl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim);margin-bottom:4px}
+.bar{height:10px;background:var(--panel2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;width:0;background:var(--good);transition:width .25s ease, background .25s ease}
+.bar i.warn{background:var(--warn)} .bar i.over{background:var(--bad)}
+.btn{background:var(--amber);color:#241E38;border:none;border-radius:8px;font-weight:700;font-size:15px;padding:11px 20px}
+.btn:hover{background:#D8C8F3}
+.btn.ghost{background:transparent;color:var(--dim);border:1px solid var(--line);font-weight:500}
+.btn.ghost:hover{color:var(--text);border-color:var(--dim)}
+
+/* modals */
+.modal{position:fixed;inset:0;background:rgba(18,14,30,.85);display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}
+.modal.hidden{display:none}
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:680px;width:100%;max-height:88vh;overflow:auto;padding:30px 28px}
+.sheet h2{font-size:24px;margin-bottom:6px}
+.sheet h2 em{color:var(--amber);font-style:normal}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.sheet p{color:var(--dim);margin:10px 0}
+.sheet p strong{color:var(--text)}
+.rules{margin:14px 0;display:grid;gap:10px}
+.rules div{display:flex;gap:12px;align-items:baseline}
+.rules .n{color:var(--amber);font-weight:600;flex:none}
+.profile{display:grid;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:16px 0}
+.profile .row{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--line)}
+.profile .row:last-child{border-bottom:none}
+.profile .k{background:var(--panel2);padding:10px 12px;font-size:12px;color:var(--dim)}
+.profile .v{padding:10px 12px;font-size:13px}
+.profile .v.hot{color:var(--warn)}
+.sheet .foot{margin-top:20px;display:flex;gap:12px;justify-content:flex-end}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:10px;padding:14px 0}
+#search{background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--text);font-family:inherit;font-size:13.5px;padding:9px 12px;min-width:220px;flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:999px;font-family:inherit;font-size:11.5px;padding:6px 11px}
+.chip.on{border-color:var(--amber);color:var(--amber)}
+
+/* table */
+table{width:100%;border-collapse:collapse;margin-bottom:80px}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);position:sticky;top:64px;background:var(--bg)}
+td{padding:10px;border-bottom:1px solid var(--panel2);vertical-align:top}
+tr.det:hover{background:var(--panel)}
+tr.det.on{background:rgba(196,173,232,.07)}
+.cb{width:18px;height:18px;accent-color:var(--amber);cursor:pointer}
+.dname{font-weight:600;color:var(--text)}
+.ddesc{color:var(--dim);font-size:12.5px;margin-top:3px;max-width:60ch}
+.tag{display:inline-block;font-size:10.5px;border:1px solid var(--line);border-radius:4px;padding:2px 7px;color:var(--dim);white-space:nowrap}
+.sev-H{color:var(--bad);border-color:#5b3029}
+.sev-M{color:var(--warn);border-color:#5d5233}
+.sev-L{color:var(--dim)}
+.est{color:var(--dim);font-size:12px;white-space:nowrap}
+
+/* results */
+.grade{display:flex;flex-wrap:wrap;gap:26px;align-items:center;margin:14px 0 6px}
+.grade .big{font-family:"Space Grotesk";font-size:64px;font-weight:700;color:var(--amber);line-height:1}
+.grade .pct{font-size:30px;font-weight:700}
+.gstats{display:grid;gap:6px;font-size:13px;color:var(--dim)}
+.gstats b{color:var(--text)}
+.gstats .flag{color:var(--bad)}
+.legend{font-size:12px;color:var(--dim);margin:14px 0 8px}
+.res-row.good{background:rgba(76,195,138,.08)}
+.res-row.bad{background:rgba(229,101,78,.08)}
+.pts{font-weight:600;white-space:nowrap}
+.pts.pos{color:var(--good)} .pts.neg{color:var(--bad)}
+.why{color:var(--dim);font-size:12.5px;margin-top:3px;max-width:58ch}
+.note{border-left:3px solid var(--amber);background:rgba(196,173,232,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:16px 0;font-size:13px}
+footer{padding:26px 0 60px;color:var(--dim);font-size:12px;border-top:1px solid var(--line)}
+footer a{color:var(--amber)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ===== RULES MODAL ===== -->
+<div class="modal" id="mRules">
+  <div class="sheet">
+    <p class="kick">A learning game by Kate Scaife</p>
+    <h2>Signal <em>&amp;</em> Noise</h2>
+    <p><strong>Your job:</strong> you're the solutions architect on a new security deployment. From a catalog of 48 detections, enable the set that best protects <strong>this specific customer</strong> — before the clock runs out.</p>
+    <div class="rules">
+      <div><span class="n">01</span><span>Every detection has a hidden point value based on fit for this customer — strong fits score high, poor fits score negative.</span></div>
+      <div><span class="n">02</span><span>Every detection also generates an estimated <strong>alert load</strong>. The customer's SOC can absorb <strong>35 alerts/day</strong>. Exceed it and your score bleeds — watch the meter.</span></div>
+      <div><span class="n">03</span><span>Your final score is multiplied by your <strong>precision</strong> — good picks ÷ total picks. Shotgunning dilutes itself.</span></div>
+      <div><span class="n">04</span><span>Results are graded against the <strong>best achievable portfolio</strong>, so your percentage means something.</span></div>
+    </div>
+    <p>More detections ≠ better security. Curate.</p>
+    <div class="foot"><button class="btn" onclick="showBriefing()">Read the customer briefing</button></div>
+  </div>
+</div>
+
+<!-- ===== CUSTOMER BRIEFING ===== -->
+<div class="modal hidden" id="mBrief">
+  <div class="sheet">
+    <p class="kick">Customer briefing</p>
+    <h2>Lantern <em>&amp;</em> Loom Home Goods</h2>
+    <p>A fictional mid-market retailer: 70 stores plus a fast-growing e-commerce business. Read carefully — every scoring decision traces back to this profile.</p>
+    <div class="profile">
+      <div class="row"><div class="k">Business</div><div class="v">Home-goods retail · 70 stores · e-commerce ≈ 40% of revenue · strong seasonal peaks</div></div>
+      <div class="row"><div class="k">Infrastructure</div><div class="v">E-commerce platform on <b>AWS</b> (EC2/ECS, S3) · <b>Okta</b> SSO · <b>Google Workspace</b> · Windows POS terminals in every store · CrowdStrike on corporate endpoints · Palo Alto at the edge</div></div>
+      <div class="row"><div class="k">NOT in use</div><div class="v hot">Azure / Microsoft 365 · GCP · Kubernetes · macOS fleet · on-prem Exchange</div></div>
+      <div class="row"><div class="k">Top concerns</div><div class="v">Payment-card skimming on checkout · ransomware · credential stuffing of customer accounts · gift-card fraud · POS malware</div></div>
+      <div class="row"><div class="k">Compliance</div><div class="v">PCI DSS</div></div>
+      <div class="row"><div class="k">SOC capacity</div><div class="v hot">4 analysts · 35 alerts/day maximum — noisy detections are actively harmful</div></div>
+      <div class="row"><div class="k">Context</div><div class="v">Retail runs on shifts — "after hours" barely exists. Peak season multiplies web traffic, and any threshold-based web detection with it.</div></div>
+    </div>
+    <div class="foot">
+      <button class="btn ghost" onclick="showRules()">Back to rules</button>
+      <button class="btn" onclick="startGame()">Start the clock</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESULTS ===== -->
+<div class="modal hidden" id="mResults">
+  <div class="sheet" style="max-width:820px">
+    <p class="kick">Results</p>
+    <div class="grade">
+      <div class="big" id="rGrade">—</div>
+      <div>
+        <div class="pct"><span id="rPct">0</span>% of optimal</div>
+        <div class="gstats">
+          <span>Raw points: <b id="rRaw">0</b> · Precision: <b id="rPrec">0</b> · Final: <b id="rFinal">0</b> / <b id="rOpt">0</b></span>
+          <span>Alert load: <b id="rLoad">0</b> / 35 per day <span id="rOver" class="flag"></span></span>
+          <span id="rVerdict"></span>
+        </div>
+      </div>
+    </div>
+    <div class="note" id="rLesson"></div>
+    <p class="legend">Your picks, with the rationale behind every score:</p>
+    <table id="rTable"><tbody></tbody></table>
+    <div class="foot"><button class="btn" onclick="location.reload()">Play again</button></div>
+  </div>
+</div>
+
+<!-- ===== GAME ===== -->
+<header>
+  <div class="wrap hud">
+    <div class="brand">Signal <span>&amp;</span> Noise</div>
+    <div class="stat" id="timer">Time <b>3:00</b></div>
+    <div class="stat">Enabled <b id="count">0</b></div>
+    <div class="stat">Score <b>???</b></div>
+    <div class="load">
+      <div class="lbl"><span>SOC alert load</span><span><span id="loadNum">0</span> / 35 per day</span></div>
+      <div class="bar"><i id="loadBar"></i></div>
+    </div>
+    <button class="btn" id="submitBtn" onclick="submitGame()">Submit portfolio</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="controls">
+    <input id="search" type="search" placeholder="Search detections…" oninput="renderTable()">
+    <div class="chips" id="chips"></div>
+  </div>
+  <table>
+    <thead><tr><th></th><th>Detection</th><th>Tactic</th><th>Severity</th><th>Est. alerts/day</th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</main>
+
+<footer class="wrap">
+  <p>A portfolio rebuild by <a href="index.html">Kate Scaife</a>. Fictional customer, original detection set, revised scoring. Concept validated in a global enablement workshop; this version fixes what the first scoring model got wrong — an unbounded score with a gentle over-enable penalty. Here, capacity is a hard constraint and precision is the multiplier, because that's how a real SOC works.</p>
+</footer>
+
+<script>
+// name, tactic, severity, desc, alerts/day, points, rationale
+const D = [
+// CRITICAL +15
+["Checkout page JavaScript integrity change","Collection","H","Unauthorized script modification on payment pages — classic web-skimming (Magecart) indicator.",1,15,"Their #1 stated threat. E-commerce is 40% of revenue and PCI DSS applies. Low volume, catastrophic if missed."],
+["POS memory-scraping behavior","Collection","H","Process reading track data patterns from memory on POS terminals.",1,15,"POS malware is a top concern with a Windows POS fleet in 70 stores. Exactly what this customer must catch."],
+["Mass file encryption burst","Impact","H","Hundreds of files encrypted in minutes on a single host.",1,15,"Ransomware is a stated top concern. Low-noise, high-severity behavioral signal."],
+["EDR sensor disabled or uninstalled","Defense Evasion","H","CrowdStrike sensor stopped, disabled, or removed from an endpoint.",2,15,"They run CrowdStrike; attackers kill the sensor first. Cheap in alerts, essential in coverage."],
+["AWS root account console login","Initial Access","H","Any interactive login to the AWS root account.",1,15,"Their platform lives on AWS. Root logins should be near-zero; each one deserves eyes."],
+["Production S3 bucket made public","Exfiltration","H","Bucket policy or ACL change exposing a production bucket to the internet.",1,15,"Customer data and PCI scope live in AWS. One quiet, decisive signal."],
+["Okta impossible travel — admin accounts","Initial Access","H","Admin session from geographically impossible consecutive locations.",2,15,"Okta is the front door to everything. Scoped to admins, it's low-volume and high-value."],
+["Gift card mass-redemption anomaly","Impact","H","Redemption velocity or value wildly outside baseline for gift card systems.",3,15,"Gift-card fraud is a stated concern and a classic retail monetization path."],
+["Distributed credential stuffing pattern","Credential Access","H","Login attempts correlated across IP diversity, velocity, and user-agent rotation on customer accounts.",4,15,"The smart version of account-attack detection: correlation, not a naive threshold — it survives peak season."],
+["DNS tunneling from POS network","Command & Control","H","High-entropy DNS query patterns originating from store POS segments.",2,15,"POS segments should have boring DNS. Tunneling here means exfil or C2 in the most sensitive network."],
+// RELEVANT +10
+["New access key for privileged IAM user","Persistence","M","Access key created for an IAM user with elevated privileges.",2,10,"AWS persistence move. Solid fit, modest volume."],
+["Okta MFA fatigue pattern","Credential Access","M","Repeated push denials followed by an approval for one user.",3,10,"Realistic path through their SSO. Good signal-to-noise."],
+["Payment database bulk query anomaly","Collection","M","Unusual volume SELECT against cardholder-adjacent data stores.",2,10,"PCI-relevant collection behavior on their crown jewels."],
+["Encoded PowerShell on POS terminal","Execution","M","Base64-encoded PowerShell execution on store POS systems.",3,10,"POS terminals have no business running encoded PowerShell. Scoped tightly enough to stay quiet."],
+["SMB admin-share lateral movement","Lateral Movement","M","Admin share access patterns consistent with lateral movement between store systems.",3,10,"Ransomware crews spread this way through flat retail networks."],
+["Phishing link click — Workspace alert","Initial Access","M","User clicked a link Google flagged as phishing.",4,10,"They're a Google Workspace shop; this is their mail-layer signal."],
+["New local admin on POS terminal","Persistence","M","Local administrator account created on a store POS device.",2,10,"Should essentially never happen; strong persistence indicator where it hurts most."],
+["Outbound connection to known C2 infrastructure","Command & Control","M","Palo Alto match on current threat-intel C2 destinations.",2,10,"They own the firewall; intel-matched C2 is bread-and-butter coverage."],
+["Bulk upload to personal cloud storage","Exfiltration","M","Large transfer from corporate endpoint to a personal storage account.",3,10,"Insider/exfil coverage with reasonable volume when scoped to bulk events."],
+["Scheduled task created by non-admin","Persistence","M","New scheduled task registered by a standard user account.",3,10,"Common persistence with manageable noise on a corporate fleet."],
+["Security group opened to 0.0.0.0/0","Defense Evasion","M","AWS security group rule change exposing a port to the entire internet.",2,10,"Cloud misconfig detection that fits their AWS estate directly."],
+["Okta session token reuse from new device","Credential Access","M","Valid session token replayed from an unfamiliar device fingerprint.",2,10,"Session hijack coverage on the identity layer everything hangs from."],
+["Web shell indicators on commerce servers","Persistence","M","Web-accessible script creation or anomalous child processes from web server workers.",1,10,"Their e-commerce runs on servers they own the images for. Quiet and decisive."],
+["Endpoint protection disabled via policy change","Defense Evasion","M","GPO or config change disabling endpoint protection on store servers.",1,10,"Defense-evasion prep for ransomware; nearly silent until it matters."],
+// MARGINAL +3
+["Tor exit node traffic to storefront","Discovery","L","Web sessions on the public store originating from Tor exit nodes.",4,3,"Public retail sites get Tor shoppers. Some intel value, not a priority."],
+["Internal port scan","Discovery","L","Sequential connection attempts across internal hosts.",3,3,"Worth having, but vulnerability scanners and monitoring tools make it mediocre signal."],
+["Rare parent-child process — corporate laptops","Execution","L","Statistically unusual process lineage on corporate endpoints.",5,3,"Interesting hunting data, but CrowdStrike already covers most of this ground."],
+["First-time country login — standard users","Initial Access","L","Non-admin user authenticates from a country never seen before.",6,3,"Employees travel and shop-floor staff churn. Scoped to admins it's critical; fleet-wide it's marginal."],
+["Archive utility staging activity","Collection","L","Compression tool used on large file sets outside normal patterns.",4,3,"Weak alone — legitimate use is constant. Better as context than as an alert."],
+["New browser extension installed","Execution","L","Unapproved extension added to a managed browser.",5,3,"Hygiene signal. Real but low-consequence in this environment."],
+["RDP from new internal source","Lateral Movement","L","RDP session between hosts with no prior relationship.",4,3,"IT support makes this noisy; some lateral-movement value remains."],
+["Excessive lockouts — single account","Credential Access","L","One account locked out repeatedly in a short window.",4,3,"Usually a stale password on a forgotten device. Occasionally real."],
+["VPN login outside business hours","Initial Access","L","Remote access session initiated overnight.",5,3,"Buyers, planners, and store ops work odd hours in retail. Thin signal here."],
+["LSASS access by uncommon process","Credential Access","L","Non-standard process handle on LSASS memory.",4,3,"Credential theft matters, but their EDR natively covers this — enabling it here mostly duplicates."],
+// NOISY −5
+["Failed-login threshold — customer accounts","Credential Access","M","Alert when any customer account exceeds N failed logins.",60,-5,"Sounds like credential-stuffing coverage; actually a flood. Peak season alone would bury a 4-person SOC. The correlation-based detection is the right pick."],
+["Any USB device inserted — all endpoints","Collection","L","Alert on every USB mass-storage connection company-wide.",25,-5,"Fleet-wide USB alerting in a 70-store retailer is noise. Scoped-to-POS would be a different conversation."],
+["Print job volume anomaly","Collection","L","Unusual print volume by user or device.",15,-5,"Stores print receipts, signage, and schedules constantly. Almost pure noise here."],
+["Cloud sync application usage","Exfiltration","L","Alert on Dropbox/Drive/OneDrive client activity.",20,-5,"They run Google Workspace — Drive is sanctioned infrastructure. This alerts on people doing their jobs."],
+["Wi-Fi probe and discovery events","Discovery","L","Alert on wireless scanning behavior near store networks.",30,-5,"Seventy stores full of customer phones probing for Wi-Fi. Belongs in a wireless controller dashboard, not a SOC queue."],
+["All PowerShell execution","Execution","M","Alert on every PowerShell invocation fleet-wide.",40,-5,"IT automation runs on PowerShell. Unfiltered, this is 40 alerts a day of your own admins working."],
+["Large email attachments","Exfiltration","L","Alert on outbound attachments over a size threshold.",12,-5,"Merch teams mail lookbooks and print files daily. Volume without intent."],
+["After-hours logins — all staff","Initial Access","L","Alert on any authentication outside 9–5.",35,-5,"Retail runs on shifts; the briefing said so. 'After hours' is when this business operates."],
+// TRAPS −10
+["Azure AD risky sign-in","Initial Access","H","Microsoft Entra risk-based sign-in detection.",0,-10,"Trap: they run Okta and Google Workspace. There is no Azure AD to monitor. Validate the environment before recommending."],
+["Microsoft 365 suspicious inbox rule","Persistence","M","Auto-forward or hide rules created in M365 mailboxes.",0,-10,"Trap: no M365 tenant exists. Right idea in the wrong stack."],
+["Kubernetes anonymous API access","Initial Access","H","Unauthenticated requests to the Kubernetes API server.",0,-10,"Trap: the platform runs on EC2/ECS. There is no cluster to protect."],
+["macOS Gatekeeper bypass","Defense Evasion","M","Execution of unsigned code bypassing Gatekeeper.",0,-10,"Trap: no macOS fleet. Zero endpoints in scope."],
+["GCP service account key creation","Persistence","M","New long-lived key created for a GCP service account.",0,-10,"Trap: this is an AWS shop. Cloud coverage must match the cloud they actually use."],
+["On-prem Exchange web shell (ProxyShell)","Persistence","H","Web shell artifacts on on-premises Exchange servers.",0,-10,"Trap: mail is Gmail via Google Workspace. There is no Exchange server to compromise."]
+];
+
+const BUDGET = 35, OVER_PENALTY = 3, TIME = 180;
+const TACTICS = [...new Set(D.map(d=>d[1]))];
+let enabled = new Set(), activeTactic = null, timeLeft = TIME, timerId = null, ended = false;
+
+// ----- optimal portfolio via knapsack DP over positive-point detections -----
+function computeOptimal(){
+  const items = D.map((d,i)=>({a:d[4],p:d[5]})).filter(x=>x.p>0);
+  const dp = new Array(BUDGET+1).fill(0);
+  for(const it of items){
+    for(let b=BUDGET; b>=it.a; b--){
+      dp[b] = Math.max(dp[b], dp[b-it.a] + it.p);
+    }
+  }
+  return Math.max(...dp);
+}
+const OPTIMAL = computeOptimal();
+
+// ----- UI -----
+function showRules(){ swap('mRules'); }
+function showBriefing(){ swap('mBrief'); }
+function swap(id){
+  ['mRules','mBrief','mResults'].forEach(m=>document.getElementById(m).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+function startGame(){
+  document.getElementById('mBrief').classList.add('hidden');
+  timerId = setInterval(tick, 1000);
+}
+function tick(){
+  timeLeft--;
+  const m = Math.floor(timeLeft/60), s = String(timeLeft%60).padStart(2,'0');
+  const t = document.getElementById('timer');
+  t.innerHTML = `Time <b>${m}:${s}</b>`;
+  if(timeLeft<=30) t.classList.add('low');
+  if(timeLeft<=0) submitGame();
+}
+function chipRow(){
+  const c = document.getElementById('chips');
+  c.innerHTML = '';
+  const all = document.createElement('button');
+  all.className = 'chip' + (activeTactic===null?' on':'');
+  all.textContent = 'All tactics';
+  all.onclick = ()=>{activeTactic=null; renderTable(); chipRow();};
+  c.appendChild(all);
+  TACTICS.forEach(t=>{
+    const b = document.createElement('button');
+    b.className = 'chip' + (activeTactic===t?' on':'');
+    b.textContent = t;
+    b.onclick = ()=>{activeTactic = (activeTactic===t?null:t); renderTable(); chipRow();};
+    c.appendChild(b);
+  });
+}
+function renderTable(){
+  const q = document.getElementById('search').value.toLowerCase();
+  const tb = document.getElementById('tbody');
+  tb.innerHTML = '';
+  D.forEach((d,i)=>{
+    if(activeTactic && d[1]!==activeTactic) return;
+    if(q && !(d[0]+' '+d[3]).toLowerCase().includes(q)) return;
+    const tr = document.createElement('tr');
+    tr.className = 'det' + (enabled.has(i)?' on':'');
+    tr.innerHTML = `
+      <td><input type="checkbox" class="cb" ${enabled.has(i)?'checked':''} aria-label="Enable ${d[0]}"></td>
+      <td><div class="dname">${d[0]}</div><div class="ddesc">${d[3]}</div></td>
+      <td><span class="tag">${d[1]}</span></td>
+      <td><span class="tag sev-${d[2]}">${d[2]==='H'?'High':d[2]==='M'?'Med':'Low'}</span></td>
+      <td class="est">~${d[4]}/day</td>`;
+    tr.querySelector('.cb').addEventListener('change', e=>{
+      e.target.checked ? enabled.add(i) : enabled.delete(i);
+      tr.classList.toggle('on', e.target.checked);
+      updateHud();
+    });
+    tb.appendChild(tr);
+  });
+}
+function load(){ let s=0; enabled.forEach(i=>s+=D[i][4]); return s; }
+function updateHud(){
+  document.getElementById('count').textContent = enabled.size;
+  const l = load();
+  document.getElementById('loadNum').textContent = l;
+  const bar = document.getElementById('loadBar');
+  bar.style.width = Math.min(100, l/BUDGET*100) + '%';
+  bar.className = l>BUDGET ? 'over' : l>BUDGET*0.8 ? 'warn' : '';
+}
+function submitGame(){
+  if(ended) return; ended = true;
+  clearInterval(timerId);
+  let raw=0, good=0;
+  enabled.forEach(i=>{ raw += D[i][5]; if(D[i][5]>0) good++; });
+  const l = load();
+  const over = Math.max(0, l-BUDGET);
+  raw -= over * OVER_PENALTY;
+  const total = enabled.size;
+  const prec = total ? good/total : 0;
+  const final = Math.max(0, Math.round(raw * prec));
+  const pct = Math.round(final/OPTIMAL*100);
+  const grade = pct>=90?'S':pct>=75?'A':pct>=55?'B':'C';
+  const verdicts = {S:'Surgical. This is senior-SA curation.',A:'Strong portfolio — a real SOC could live with this.',B:'Solid instincts with some noise or gaps to trim.',C:'Room to grow — revisit the customer briefing and try again.'};
+
+  document.getElementById('rGrade').textContent = grade;
+  document.getElementById('rPct').textContent = pct;
+  document.getElementById('rRaw').textContent = raw;
+  document.getElementById('rPrec').textContent = '×' + prec.toFixed(2);
+  document.getElementById('rFinal').textContent = final;
+  document.getElementById('rOpt').textContent = OPTIMAL;
+  document.getElementById('rLoad').textContent = l;
+  document.getElementById('rOver').textContent = over ? `— over budget by ${over} (−${over*OVER_PENALTY} pts)` : '';
+  document.getElementById('rVerdict').textContent = verdicts[grade];
+
+  const traps = [...enabled].filter(i=>D[i][5]===-10).length;
+  const noisy = [...enabled].filter(i=>D[i][5]===-5).length;
+  let lesson;
+  if(traps) lesson = `You enabled ${traps} detection${traps>1?'s':''} for technology this customer doesn't run. The most expensive mistakes in a real engagement are the ones that reveal you didn't read the environment.`;
+  else if(over) lesson = `Every point you scored, an overwhelmed 4-person SOC has to live with. You gave them ${l} alerts a day against a capacity of ${BUDGET} — in the real world, they'd start ignoring the queue, including your best detections.`;
+  else if(noisy) lesson = `No traps and within budget — but ${noisy} noisy pick${noisy>1?'s':''} diluted your precision. Ask of every detection: who triages this at 2pm on Black Friday?`;
+  else if(pct>=90) lesson = `You read the environment, respected the SOC's capacity, and picked signals over thresholds. That's the whole lesson — coverage is a budget you spend, not a checklist you complete.`;
+  else lesson = `Clean portfolio — no traps, no noise, within budget. The remaining gap is coverage: some high-value detections for this environment went unused. Efficiency and completeness are both part of the job.`;
+  document.getElementById('rLesson').textContent = lesson;
+
+  const tb = document.querySelector('#rTable tbody');
+  tb.innerHTML = '';
+  const picks = [...enabled].sort((a,b)=>D[b][5]-D[a][5]);
+  picks.forEach(i=>{
+    const d = D[i];
+    const tr = document.createElement('tr');
+    tr.className = 'res-row ' + (d[5]>0?'good':'bad');
+    tr.innerHTML = `
+      <td class="pts ${d[5]>0?'pos':'neg'}">${d[5]>0?'+':''}${d[5]}</td>
+      <td><div class="dname">${d[0]}</div><div class="why">${d[6]}</div></td>
+      <td class="est">~${d[4]}/day</td>`;
+    tb.appendChild(tr);
+  });
+  if(!picks.length){
+    tb.innerHTML = '<tr><td colspan="3" class="why">You enabled nothing. Zero noise, zero coverage — the SOC is quiet and the attacker is thrilled.</td></tr>';
+  }
+  swap('mResults');
+}
+
+chipRow();
+renderTable();
+updateHud();
+</script>
+</body>
+</html>
