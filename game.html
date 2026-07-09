@@ -43,7 +43,7 @@ header{position:sticky;top:0;z-index:5;background:rgba(34,28,54,.96);border-bott
 /* modals */
 .modal{position:fixed;inset:0;background:rgba(18,14,30,.85);display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}
 .modal.hidden{display:none}
-.sheet{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:680px;width:100%;max-height:88vh;overflow:auto;padding:30px 28px}
+.sheet{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:680px;width:100%;max-height:88vh;overflow:auto;padding:30px 28px}
 .sheet h2{font-size:24px;margin-bottom:6px}
 .sheet h2 em{color:var(--amber);font-style:normal}
 .kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
@@ -108,6 +108,7 @@ footer a{color:var(--amber)}
 <!-- ===== RULES MODAL ===== -->
 <div class="modal" id="mRules">
   <div class="sheet">
+    <button class="xclose" onclick="document.getElementById('mRules').classList.add('hidden')" aria-label="Close and browse the board">×</button>
     <p class="kick">A learning game by Kate Scaife</p>
     <h2>Signal <em>&amp;</em> Noise</h2>
     <p><strong>Your job:</strong> you're the solutions architect on a new security deployment. From a catalog of 48 detections, enable the set that best protects <strong>this specific customer</strong>, before the clock runs out.</p>
@@ -125,6 +126,7 @@ footer a{color:var(--amber)}
 <!-- ===== CUSTOMER BRIEFING ===== -->
 <div class="modal hidden" id="mBrief">
   <div class="sheet">
+    <button class="xclose" onclick="document.getElementById('mBrief').classList.add('hidden')" aria-label="Close and browse the board">×</button>
     <p class="kick">Customer briefing</p>
     <h2>Lantern <em>&amp;</em> Loom Home Goods</h2>
     <p>A fictional mid-market retailer: 70 stores plus a fast-growing e-commerce business. Read carefully, every scoring decision traces back to this profile.</p>
@@ -194,7 +196,7 @@ footer a{color:var(--amber)}
 </main>
 
 <footer class="wrap">
-  <p>A portfolio rebuild by <a href="index.html">Kate Scaife</a>. Fictional customer, original detection set, revised scoring. Concept validated in a global enablement workshop; this version fixes what the first scoring model got wrong: an unbounded score with a gentle over-enable penalty. Here, capacity is a hard constraint and precision is the multiplier, because that's how a real SOC works.</p>
+  <p>A portfolio rebuild by <a href="index.html">Kate Scaife</a>. Fictional customer, original detection set, revised scoring. Scaled down from a version designed for a global enablement workshop; the customer, detection set, and scoring here were built fresh for this portfolio.</p>
 </footer>
 
 <script>
