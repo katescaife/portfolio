@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Signal &amp; Noise — A Detection Curation Game</title>
+<title>Signal &amp; Noise, A Detection Curation Game</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -89,6 +89,8 @@ tr.det.on{background:rgba(196,173,232,.07)}
 .gstats{display:grid;gap:6px;font-size:13px;color:var(--dim)}
 .gstats b{color:var(--text)}
 .gstats .flag{color:var(--bad)}
+.xclose{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--dim);font-size:28px;line-height:1;cursor:pointer;padding:4px 8px}
+.xclose:hover{color:var(--text)}
 .legend{font-size:12px;color:var(--dim);margin:14px 0 8px}
 .res-row.good{background:rgba(76,195,138,.08)}
 .res-row.bad{background:rgba(229,101,78,.08)}
@@ -108,11 +110,11 @@ footer a{color:var(--amber)}
   <div class="sheet">
     <p class="kick">A learning game by Kate Scaife</p>
     <h2>Signal <em>&amp;</em> Noise</h2>
-    <p><strong>Your job:</strong> you're the solutions architect on a new security deployment. From a catalog of 48 detections, enable the set that best protects <strong>this specific customer</strong> — before the clock runs out.</p>
+    <p><strong>Your job:</strong> you're the solutions architect on a new security deployment. From a catalog of 48 detections, enable the set that best protects <strong>this specific customer</strong>, before the clock runs out.</p>
     <div class="rules">
-      <div><span class="n">01</span><span>Every detection has a hidden point value based on fit for this customer — strong fits score high, poor fits score negative.</span></div>
-      <div><span class="n">02</span><span>Every detection also generates an estimated <strong>alert load</strong>. The customer's SOC can absorb <strong>35 alerts/day</strong>. Exceed it and your score bleeds — watch the meter.</span></div>
-      <div><span class="n">03</span><span>Your final score is multiplied by your <strong>precision</strong> — good picks ÷ total picks. Shotgunning dilutes itself.</span></div>
+      <div><span class="n">01</span><span>Every detection has a hidden point value based on fit for this customer, strong fits score high, poor fits score negative.</span></div>
+      <div><span class="n">02</span><span>Every detection also generates an estimated <strong>alert load</strong>. The customer's SOC can absorb <strong>35 alerts/day</strong>. Exceed it and your score bleeds. Watch the meter.</span></div>
+      <div><span class="n">03</span><span>Your final score is multiplied by your <strong>precision</strong>, good picks ÷ total picks. Shotgunning dilutes itself.</span></div>
       <div><span class="n">04</span><span>Results are graded against the <strong>best achievable portfolio</strong>, so your percentage means something.</span></div>
     </div>
     <p>More detections ≠ better security. Curate.</p>
@@ -125,15 +127,15 @@ footer a{color:var(--amber)}
   <div class="sheet">
     <p class="kick">Customer briefing</p>
     <h2>Lantern <em>&amp;</em> Loom Home Goods</h2>
-    <p>A fictional mid-market retailer: 70 stores plus a fast-growing e-commerce business. Read carefully — every scoring decision traces back to this profile.</p>
+    <p>A fictional mid-market retailer: 70 stores plus a fast-growing e-commerce business. Read carefully, every scoring decision traces back to this profile.</p>
     <div class="profile">
       <div class="row"><div class="k">Business</div><div class="v">Home-goods retail · 70 stores · e-commerce ≈ 40% of revenue · strong seasonal peaks</div></div>
       <div class="row"><div class="k">Infrastructure</div><div class="v">E-commerce platform on <b>AWS</b> (EC2/ECS, S3) · <b>Okta</b> SSO · <b>Google Workspace</b> · Windows POS terminals in every store · CrowdStrike on corporate endpoints · Palo Alto at the edge</div></div>
       <div class="row"><div class="k">NOT in use</div><div class="v hot">Azure / Microsoft 365 · GCP · Kubernetes · macOS fleet · on-prem Exchange</div></div>
       <div class="row"><div class="k">Top concerns</div><div class="v">Payment-card skimming on checkout · ransomware · credential stuffing of customer accounts · gift-card fraud · POS malware</div></div>
       <div class="row"><div class="k">Compliance</div><div class="v">PCI DSS</div></div>
-      <div class="row"><div class="k">SOC capacity</div><div class="v hot">4 analysts · 35 alerts/day maximum — noisy detections are actively harmful</div></div>
-      <div class="row"><div class="k">Context</div><div class="v">Retail runs on shifts — "after hours" barely exists. Peak season multiplies web traffic, and any threshold-based web detection with it.</div></div>
+      <div class="row"><div class="k">SOC capacity</div><div class="v hot">4 analysts · 35 alerts/day maximum: noisy detections are actively harmful</div></div>
+      <div class="row"><div class="k">Context</div><div class="v">Retail runs on shifts: "after hours" barely exists. Peak season multiplies web traffic, and any threshold-based web detection with it.</div></div>
     </div>
     <div class="foot">
       <button class="btn ghost" onclick="showRules()">Back to rules</button>
@@ -144,7 +146,8 @@ footer a{color:var(--amber)}
 
 <!-- ===== RESULTS ===== -->
 <div class="modal hidden" id="mResults">
-  <div class="sheet" style="max-width:820px">
+  <div class="sheet" style="max-width:820px;position:relative">
+    <button class="xclose" onclick="closeResults()" aria-label="Close results and review the board">×</button>
     <p class="kick">Results</p>
     <div class="grade">
       <div class="big" id="rGrade">—</div>
@@ -191,22 +194,22 @@ footer a{color:var(--amber)}
 </main>
 
 <footer class="wrap">
-  <p>A portfolio rebuild by <a href="index.html">Kate Scaife</a>. Fictional customer, original detection set, revised scoring. Concept validated in a global enablement workshop; this version fixes what the first scoring model got wrong — an unbounded score with a gentle over-enable penalty. Here, capacity is a hard constraint and precision is the multiplier, because that's how a real SOC works.</p>
+  <p>A portfolio rebuild by <a href="index.html">Kate Scaife</a>. Fictional customer, original detection set, revised scoring. Concept validated in a global enablement workshop; this version fixes what the first scoring model got wrong: an unbounded score with a gentle over-enable penalty. Here, capacity is a hard constraint and precision is the multiplier, because that's how a real SOC works.</p>
 </footer>
 
 <script>
 // name, tactic, severity, desc, alerts/day, points, rationale
 const D = [
 // CRITICAL +15
-["Checkout page JavaScript integrity change","Collection","H","Unauthorized script modification on payment pages — classic web-skimming (Magecart) indicator.",1,15,"Their #1 stated threat. E-commerce is 40% of revenue and PCI DSS applies. Low volume, catastrophic if missed."],
+["Checkout page JavaScript integrity change","Collection","H","Unauthorized script modification on payment pages, classic web-skimming (Magecart) indicator.",1,15,"Their #1 stated threat. E-commerce is 40% of revenue and PCI DSS applies. Low volume, catastrophic if missed."],
 ["POS memory-scraping behavior","Collection","H","Process reading track data patterns from memory on POS terminals.",1,15,"POS malware is a top concern with a Windows POS fleet in 70 stores. Exactly what this customer must catch."],
 ["Mass file encryption burst","Impact","H","Hundreds of files encrypted in minutes on a single host.",1,15,"Ransomware is a stated top concern. Low-noise, high-severity behavioral signal."],
 ["EDR sensor disabled or uninstalled","Defense Evasion","H","CrowdStrike sensor stopped, disabled, or removed from an endpoint.",2,15,"They run CrowdStrike; attackers kill the sensor first. Cheap in alerts, essential in coverage."],
 ["AWS root account console login","Initial Access","H","Any interactive login to the AWS root account.",1,15,"Their platform lives on AWS. Root logins should be near-zero; each one deserves eyes."],
 ["Production S3 bucket made public","Exfiltration","H","Bucket policy or ACL change exposing a production bucket to the internet.",1,15,"Customer data and PCI scope live in AWS. One quiet, decisive signal."],
-["Okta impossible travel — admin accounts","Initial Access","H","Admin session from geographically impossible consecutive locations.",2,15,"Okta is the front door to everything. Scoped to admins, it's low-volume and high-value."],
+["Okta impossible travel, admin accounts","Initial Access","H","Admin session from geographically impossible consecutive locations.",2,15,"Okta is the front door to everything. Scoped to admins, it's low-volume and high-value."],
 ["Gift card mass-redemption anomaly","Impact","H","Redemption velocity or value wildly outside baseline for gift card systems.",3,15,"Gift-card fraud is a stated concern and a classic retail monetization path."],
-["Distributed credential stuffing pattern","Credential Access","H","Login attempts correlated across IP diversity, velocity, and user-agent rotation on customer accounts.",4,15,"The smart version of account-attack detection: correlation, not a naive threshold — it survives peak season."],
+["Distributed credential stuffing pattern","Credential Access","H","Login attempts correlated across IP diversity, velocity, and user-agent rotation on customer accounts.",4,15,"The smart version of account-attack detection: correlation, not a naive threshold, so it survives peak season."],
 ["DNS tunneling from POS network","Command & Control","H","High-entropy DNS query patterns originating from store POS segments.",2,15,"POS segments should have boring DNS. Tunneling here means exfil or C2 in the most sensitive network."],
 // RELEVANT +10
 ["New access key for privileged IAM user","Persistence","M","Access key created for an IAM user with elevated privileges.",2,10,"AWS persistence move. Solid fit, modest volume."],
@@ -214,7 +217,7 @@ const D = [
 ["Payment database bulk query anomaly","Collection","M","Unusual volume SELECT against cardholder-adjacent data stores.",2,10,"PCI-relevant collection behavior on their crown jewels."],
 ["Encoded PowerShell on POS terminal","Execution","M","Base64-encoded PowerShell execution on store POS systems.",3,10,"POS terminals have no business running encoded PowerShell. Scoped tightly enough to stay quiet."],
 ["SMB admin-share lateral movement","Lateral Movement","M","Admin share access patterns consistent with lateral movement between store systems.",3,10,"Ransomware crews spread this way through flat retail networks."],
-["Phishing link click — Workspace alert","Initial Access","M","User clicked a link Google flagged as phishing.",4,10,"They're a Google Workspace shop; this is their mail-layer signal."],
+["Phishing link click, Workspace alert","Initial Access","M","User clicked a link Google flagged as phishing.",4,10,"They're a Google Workspace shop; this is their mail-layer signal."],
 ["New local admin on POS terminal","Persistence","M","Local administrator account created on a store POS device.",2,10,"Should essentially never happen; strong persistence indicator where it hurts most."],
 ["Outbound connection to known C2 infrastructure","Command & Control","M","Palo Alto match on current threat-intel C2 destinations.",2,10,"They own the firewall; intel-matched C2 is bread-and-butter coverage."],
 ["Bulk upload to personal cloud storage","Exfiltration","M","Large transfer from corporate endpoint to a personal storage account.",3,10,"Insider/exfil coverage with reasonable volume when scoped to bulk events."],
@@ -226,23 +229,23 @@ const D = [
 // MARGINAL +3
 ["Tor exit node traffic to storefront","Discovery","L","Web sessions on the public store originating from Tor exit nodes.",4,3,"Public retail sites get Tor shoppers. Some intel value, not a priority."],
 ["Internal port scan","Discovery","L","Sequential connection attempts across internal hosts.",3,3,"Worth having, but vulnerability scanners and monitoring tools make it mediocre signal."],
-["Rare parent-child process — corporate laptops","Execution","L","Statistically unusual process lineage on corporate endpoints.",5,3,"Interesting hunting data, but CrowdStrike already covers most of this ground."],
-["First-time country login — standard users","Initial Access","L","Non-admin user authenticates from a country never seen before.",6,3,"Employees travel and shop-floor staff churn. Scoped to admins it's critical; fleet-wide it's marginal."],
-["Archive utility staging activity","Collection","L","Compression tool used on large file sets outside normal patterns.",4,3,"Weak alone — legitimate use is constant. Better as context than as an alert."],
+["Rare parent-child process, corporate laptops","Execution","L","Statistically unusual process lineage on corporate endpoints.",5,3,"Interesting hunting data, but CrowdStrike already covers most of this ground."],
+["First-time country login, standard users","Initial Access","L","Non-admin user authenticates from a country never seen before.",6,3,"Employees travel and shop-floor staff churn. Scoped to admins it's critical; fleet-wide it's marginal."],
+["Archive utility staging activity","Collection","L","Compression tool used on large file sets outside normal patterns.",4,3,"Weak alone; legitimate use is constant. Better as context than as an alert."],
 ["New browser extension installed","Execution","L","Unapproved extension added to a managed browser.",5,3,"Hygiene signal. Real but low-consequence in this environment."],
 ["RDP from new internal source","Lateral Movement","L","RDP session between hosts with no prior relationship.",4,3,"IT support makes this noisy; some lateral-movement value remains."],
-["Excessive lockouts — single account","Credential Access","L","One account locked out repeatedly in a short window.",4,3,"Usually a stale password on a forgotten device. Occasionally real."],
+["Excessive lockouts, single account","Credential Access","L","One account locked out repeatedly in a short window.",4,3,"Usually a stale password on a forgotten device. Occasionally real."],
 ["VPN login outside business hours","Initial Access","L","Remote access session initiated overnight.",5,3,"Buyers, planners, and store ops work odd hours in retail. Thin signal here."],
-["LSASS access by uncommon process","Credential Access","L","Non-standard process handle on LSASS memory.",4,3,"Credential theft matters, but their EDR natively covers this — enabling it here mostly duplicates."],
+["LSASS access by uncommon process","Credential Access","L","Non-standard process handle on LSASS memory.",4,3,"Credential theft matters, but their EDR natively covers this, enabling it here mostly duplicates."],
 // NOISY −5
-["Failed-login threshold — customer accounts","Credential Access","M","Alert when any customer account exceeds N failed logins.",60,-5,"Sounds like credential-stuffing coverage; actually a flood. Peak season alone would bury a 4-person SOC. The correlation-based detection is the right pick."],
-["Any USB device inserted — all endpoints","Collection","L","Alert on every USB mass-storage connection company-wide.",25,-5,"Fleet-wide USB alerting in a 70-store retailer is noise. Scoped-to-POS would be a different conversation."],
+["Failed-login threshold, customer accounts","Credential Access","M","Alert when any customer account exceeds N failed logins.",60,-5,"Sounds like credential-stuffing coverage; actually a flood. Peak season alone would bury a 4-person SOC. The correlation-based detection is the right pick."],
+["Any USB device inserted, all endpoints","Collection","L","Alert on every USB mass-storage connection company-wide.",25,-5,"Fleet-wide USB alerting in a 70-store retailer is noise. Scoped-to-POS would be a different conversation."],
 ["Print job volume anomaly","Collection","L","Unusual print volume by user or device.",15,-5,"Stores print receipts, signage, and schedules constantly. Almost pure noise here."],
-["Cloud sync application usage","Exfiltration","L","Alert on Dropbox/Drive/OneDrive client activity.",20,-5,"They run Google Workspace — Drive is sanctioned infrastructure. This alerts on people doing their jobs."],
+["Cloud sync application usage","Exfiltration","L","Alert on Dropbox/Drive/OneDrive client activity.",20,-5,"They run Google Workspace, Drive is sanctioned infrastructure. This alerts on people doing their jobs."],
 ["Wi-Fi probe and discovery events","Discovery","L","Alert on wireless scanning behavior near store networks.",30,-5,"Seventy stores full of customer phones probing for Wi-Fi. Belongs in a wireless controller dashboard, not a SOC queue."],
 ["All PowerShell execution","Execution","M","Alert on every PowerShell invocation fleet-wide.",40,-5,"IT automation runs on PowerShell. Unfiltered, this is 40 alerts a day of your own admins working."],
 ["Large email attachments","Exfiltration","L","Alert on outbound attachments over a size threshold.",12,-5,"Merch teams mail lookbooks and print files daily. Volume without intent."],
-["After-hours logins — all staff","Initial Access","L","Alert on any authentication outside 9–5.",35,-5,"Retail runs on shifts; the briefing said so. 'After hours' is when this business operates."],
+["After-hours logins, all staff","Initial Access","L","Alert on any authentication outside 9–5.",35,-5,"Retail runs on shifts; the briefing said so. 'After hours' is when this business operates."],
 // TRAPS −10
 ["Azure AD risky sign-in","Initial Access","H","Microsoft Entra risk-based sign-in detection.",0,-10,"Trap: they run Okta and Google Workspace. There is no Azure AD to monitor. Validate the environment before recommending."],
 ["Microsoft 365 suspicious inbox rule","Persistence","M","Auto-forward or hide rules created in M365 mailboxes.",0,-10,"Trap: no M365 tenant exists. Right idea in the wrong stack."],
@@ -337,7 +340,8 @@ function updateHud(){
   bar.className = l>BUDGET ? 'over' : l>BUDGET*0.8 ? 'warn' : '';
 }
 function submitGame(){
-  if(ended) return; ended = true;
+  if(ended){ swap('mResults'); return; }
+  ended = true;
   clearInterval(timerId);
   let raw=0, good=0;
   enabled.forEach(i=>{ raw += D[i][5]; if(D[i][5]>0) good++; });
@@ -349,7 +353,7 @@ function submitGame(){
   const final = Math.max(0, Math.round(raw * prec));
   const pct = Math.round(final/OPTIMAL*100);
   const grade = pct>=90?'S':pct>=75?'A':pct>=55?'B':'C';
-  const verdicts = {S:'Surgical. This is senior-SA curation.',A:'Strong portfolio — a real SOC could live with this.',B:'Solid instincts with some noise or gaps to trim.',C:'Room to grow — revisit the customer briefing and try again.'};
+  const verdicts = {S:'Surgical. This is senior-SA curation.',A:'Strong portfolio; a real SOC could live with this.',B:'Solid instincts with some noise or gaps to trim.',C:'Room to grow: revisit the customer briefing and try again.'};
 
   document.getElementById('rGrade').textContent = grade;
   document.getElementById('rPct').textContent = pct;
@@ -365,10 +369,10 @@ function submitGame(){
   const noisy = [...enabled].filter(i=>D[i][5]===-5).length;
   let lesson;
   if(traps) lesson = `You enabled ${traps} detection${traps>1?'s':''} for technology this customer doesn't run. The most expensive mistakes in a real engagement are the ones that reveal you didn't read the environment.`;
-  else if(over) lesson = `Every point you scored, an overwhelmed 4-person SOC has to live with. You gave them ${l} alerts a day against a capacity of ${BUDGET} — in the real world, they'd start ignoring the queue, including your best detections.`;
-  else if(noisy) lesson = `No traps and within budget — but ${noisy} noisy pick${noisy>1?'s':''} diluted your precision. Ask of every detection: who triages this at 2pm on Black Friday?`;
-  else if(pct>=90) lesson = `You read the environment, respected the SOC's capacity, and picked signals over thresholds. That's the whole lesson — coverage is a budget you spend, not a checklist you complete.`;
-  else lesson = `Clean portfolio — no traps, no noise, within budget. The remaining gap is coverage: some high-value detections for this environment went unused. Efficiency and completeness are both part of the job.`;
+  else if(over) lesson = `Every point you scored, an overwhelmed 4-person SOC has to live with. You gave them ${l} alerts a day against a capacity of ${BUDGET}. In the real world, they'd start ignoring the queue, including your best detections.`;
+  else if(noisy) lesson = `No traps and within budget, but ${noisy} noisy pick${noisy>1?'s':''} diluted your precision. Ask of every detection: who triages this at 2pm on Black Friday?`;
+  else if(pct>=90) lesson = `You read the environment, respected the SOC's capacity, and picked signals over thresholds. That's the whole lesson: coverage is a budget you spend, not a checklist you complete.`;
+  else lesson = `Clean portfolio, no traps, no noise, within budget. The remaining gap is coverage: some high-value detections for this environment went unused. Efficiency and completeness are both part of the job.`;
   document.getElementById('rLesson').textContent = lesson;
 
   const tb = document.querySelector('#rTable tbody');
@@ -385,11 +389,19 @@ function submitGame(){
     tb.appendChild(tr);
   });
   if(!picks.length){
-    tb.innerHTML = '<tr><td colspan="3" class="why">You enabled nothing. Zero noise, zero coverage — the SOC is quiet and the attacker is thrilled.</td></tr>';
+    tb.innerHTML = '<tr><td colspan="3" class="why">You enabled nothing. Zero noise, zero coverage: the SOC is quiet and the attacker is thrilled.</td></tr>';
   }
   swap('mResults');
 }
 
+function closeResults(){
+  document.getElementById('mResults').classList.add('hidden');
+  const b = document.getElementById('submitBtn');
+  b.textContent = 'View results';
+}
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && ended) closeResults();
+});
 chipRow();
 renderTable();
 updateHud();
