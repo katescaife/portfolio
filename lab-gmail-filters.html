@@ -25,12 +25,11 @@
 .step-label{font-size:14.5px;color:var(--ink-soft);padding-top:5px;transition:color .25s ease}
 .step.active .step-label,.step.done .step-label{color:var(--ink);font-weight:600}
 
-.screen-panel{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.screen-panel{background:#FFFFFF;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08)}
 .scene.on{display:block}
 
 /* mail chrome */
-.mail-top{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper)}
-.mail-logo{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--ink)}
+.mail-top{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper)}.mail-logo{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:#cbcbcb(--ink)}
 .mail-logo svg{flex:none}
 .mail-search{flex:1;height:34px;border-radius:999px;background:rgba(120,120,140,.09);border:1px solid var(--line)}
 .mail-compose{font-family:"Public Sans",sans-serif;font-size:13px;font-weight:700;background:#3E6BF0;color:#fff;border:none;border-radius:20px;padding:9px 18px;cursor:pointer;flex:none}
@@ -50,7 +49,7 @@
 .mail-subject{font-size:14px;color:var(--body);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mail-time{font-size:12px;color:var(--ink-soft);flex:none}
 
-.dropdown{position:absolute;top:8px;right:16px;width:230px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 26px rgba(0,0,0,.16);overflow:hidden;z-index:5}
+.dropdown{position:absolute;top:8px;right:16px;width:230px;background:#cbcbcb(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 26px rgba(0,0,0,.16);overflow:hidden;z-index:5}
 .dd-item{display:block;width:100%;text-align:left;background:none;border:none;padding:12px 16px;font-family:"Public Sans",sans-serif;font-size:13.5px;color:var(--body);cursor:pointer;border-bottom:1px solid var(--line)}
 .dd-item:last-child{border-bottom:none}
 .dd-item:hover{background:rgba(62,143,145,.09);color:var(--ink)}
@@ -100,8 +99,10 @@
 <h1>A filters lab, built to be broken</h1>
 <p class="meta">Original practice module · built for this portfolio</p>
 
-<p class="lab-intro">This one isn't from an employer, it's something I built to show the design approach behind my workshop and micro-learning work directly, rather than just describing it. It walks through setting up an email filter using a free, public product, so you can click the wrong thing on purpose and see what happens, the same way I design real practice.</p>
-<div class="lab-badge">Recreated interface for demonstration <span>·</span> not affiliated with Google</div>
+<p class="lab-intro">The vast majority of my past work is the IP of the employers I built it for, so I created this simple, small-scale example of my design approach, rather than just describing it. This short practice lab walks through setting up an email filter on a popular and a free, public product. Many similarly built learning experiences over-guide the user or even prvent them from clicking anything other than the right object. I've always felt that approach limits the staying power of the knowledge you're trying to transfer. Instead, I create learning experiences where the user has little guidance, and can make the wrong choice and either see the result or recieve feedback. These experiences are closer to a lab than a click-through.</p>
+<div class="lab-badge">Recreated interface for demonstration <span>·</span> not affiliated with with any mail provider</div>
+
+  <hr style="border:none;border-top:1px solid var(--line);margin:24px 0">
 
 <p class="lab-intro"><strong>The task:</strong> a newsletter is burying your inbox. Set up a filter so future emails from it skip the inbox and file themselves away automatically.</p>
 
