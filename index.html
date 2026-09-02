@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kate Scaife · Learning Architect</title>
-<meta name="description" content="Kate Scaife designs AI-enabled learning systems. Don't read about her work. Run it.">
+<meta name="description" content="Kate Scaife designs AI-enabled learning systems and the adoption strategy behind them.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,600&family=Public+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme: light dark;
-    --ink:#2A2440;         /* deep purple */
-    --dark:#2A2440;        /* dark section bg */
-    --ink-soft:#6E6788;    /* muted purple */
-    --paper:#EFECE5;       /* warm off-white */
+    --ink:#2A2440;
+    --dark:#2A2440;
+    --ink-soft:#6E6788;
+    --paper:#EFECE5;
     --card:#FFFFFF;
     --line:#DCD7CC;
     --teal:#3E8F91;
@@ -36,24 +36,66 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
-  body{
-    background:var(--paper); color:var(--ink);
-    font-family:"Public Sans",system-ui,sans-serif;
-    font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
-  }
+  body{background:var(--paper); color:var(--ink); font-family:"Public Sans",system-ui,sans-serif; font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;}
   .wrap{max-width:820px;margin:0 auto;padding:0 24px}
   a{color:var(--teal)}
   a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:2px}
 
   header{padding:56px 0 0}
   .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:500}
-  h1{font-family:"Fraunces",serif;font-optical-sizing:auto;font-weight:600;font-size:clamp(38px,7vw,58px);line-height:1.06;letter-spacing:-0.015em;margin:14px 0 22px}
+  h1{font-family:"Fraunces",serif;font-optical-sizing:auto;font-weight:600;font-size:clamp(34px,6.4vw,52px);line-height:1.1;letter-spacing:-0.015em;margin:14px 0 22px}
   .mark{background:linear-gradient(104deg, transparent 2%, var(--mark-soft) 3%, var(--mark-soft) 97%, transparent 98%);padding:0 .1em}
-  .lede{font-size:19px;color:var(--ink-soft);max-width:58ch}
+  .lede{font-size:19px;color:var(--ink-soft);max-width:60ch}
   .lede strong{color:var(--ink)}
 
+  /* toggle */
+  .toggle-sentinel{height:1px}
+  .toggle-wrap{position:sticky;top:0;z-index:50;background:var(--paper);padding:18px 0 20px;margin:0 0 8px;border-bottom:1px solid transparent;transition:box-shadow .25s ease, border-color .25s ease}
+  .toggle-wrap.stuck{box-shadow:0 6px 18px rgba(0,0,0,.10);border-bottom-color:var(--line)}
+  .toggle-label{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+  .toggle-note{font-size:13px;color:var(--ink-soft);margin-top:10px;max-width:60ch}
+  .toggle{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;gap:2px}
+  .toggle-btn{font-family:"Public Sans",sans-serif;font-weight:700;font-size:14.5px;background:none;border:none;border-radius:999px;padding:10px 18px;cursor:pointer;color:var(--ink-soft);transition:background .25s ease, color .25s ease}
+  .toggle-btn:hover{color:var(--ink)}
+  .toggle-btn.active{background:var(--dark);color:#fff}
+  .toggle-btn.active[data-filter="all"]{background:var(--lav);color:#241E38}
+  .toggle-btn.active[data-filter="delivery"]{background:var(--mark-soft);color:var(--ink)}
+  .toggle-btn.active[data-filter="strategy"]{background:var(--dark);color:#fff}
+  @media (max-width:560px){ .toggle{flex-direction:column;border-radius:16px} .toggle-btn{border-radius:12px} }
+
+  [data-tag]{transition:opacity .45s ease, filter .45s ease}
+  [data-tag].dim{opacity:.34;filter:saturate(.45)}
+
+  section{padding:64px 0 8px}
+  .sec-label{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:500;display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .sec-label::after{content:"";height:1px;background:var(--line);flex:1}
+  .sec-note{color:var(--ink-soft);font-size:15px;margin-bottom:26px;max-width:60ch}
+
+  /* tagged accomplishments list */
+  .acc-list{display:grid;gap:16px}
+  .acc-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+  .acc-chip{flex:none;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:5px 10px;margin-top:2px;white-space:nowrap}
+  .acc-chip.delivery{background:var(--mark-soft);color:var(--ink)}
+  .acc-chip.strategy{background:var(--dark);color:#fff}
+  .acc-chip.both{background:var(--lav);color:#241E38}
+  .acc-item p{color:var(--ink-soft);font-size:15.5px}
+  .acc-item p strong{color:var(--ink)}
+
+  /* work cards */
+  .work{display:grid;gap:18px;margin-top:26px}
+  .wcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;display:block;text-decoration:none;color:var(--ink);transition:transform .12s ease, border-color .12s ease, opacity .45s ease, filter .45s ease}
+  .wcard:hover{transform:translateY(-2px);border-color:var(--lav)}
+  .wcard .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase}
+  .wcard h3{font-family:"Fraunces",serif;font-weight:600;font-size:22px;margin:6px 0 8px}
+  .wcard p{color:var(--ink-soft);font-size:15.5px;max-width:66ch}
+  .wcard .go{display:inline-block;margin-top:12px;font-weight:700;font-size:14.5px;color:var(--teal)}
+  .wcard.feature{background:var(--dark);color:#EAE6F2;border-color:var(--dark)}
+  .wcard.feature h3{color:#fff}
+  .wcard.feature p{color:#BDB4D6}
+  .wcard.feature .kicker,.wcard.feature .go{color:var(--lav)}
+
   /* dark console — deep purple */
-  .console{margin:44px 0 0;background:var(--dark);color:#EAE6F2;border-radius:14px;padding:34px 30px 30px;position:relative;overflow:hidden}
+  .console{margin:0;background:var(--dark);color:#EAE6F2;border-radius:14px;padding:34px 30px 30px;position:relative;overflow:hidden}
   .console::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--lav),var(--teal))}
   .console .eyebrow{color:var(--lav)}
   .console h2{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(24px,4vw,30px);line-height:1.15;margin:10px 0 12px;color:#fff}
@@ -72,27 +114,6 @@
   .console pre{margin-top:14px;white-space:pre-wrap;font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.6;color:#C5BBDD;max-height:420px;overflow:auto;background:#1B1630;border-radius:8px;padding:18px}
   .fineprint{margin-top:16px;font-size:13px;color:#968CB5}
 
-  section{padding:64px 0 8px}
-  .sec-label{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:500;display:flex;align-items:center;gap:14px;margin-bottom:26px}
-  .sec-label::after{content:"";height:1px;background:var(--line);flex:1}
-  h3.pillar{font-family:"Fraunces",serif;font-weight:600;font-size:22px;margin:0 0 6px}
-  .pillars{display:grid;gap:30px}
-  .pillar-item p{color:var(--ink-soft);max-width:64ch}
-  .pillar-item p strong{color:var(--ink)}
-
-  /* work cards */
-  .work{display:grid;gap:18px}
-  .wcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;display:block;text-decoration:none;color:var(--ink);transition:transform .12s ease, border-color .12s ease}
-  .wcard:hover{transform:translateY(-2px);border-color:var(--lav)}
-  .wcard .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase}
-  .wcard h3{font-family:"Fraunces",serif;font-weight:600;font-size:22px;margin:6px 0 8px}
-  .wcard p{color:var(--ink-soft);font-size:15.5px;max-width:66ch}
-  .wcard .go{display:inline-block;margin-top:12px;font-weight:700;font-size:14.5px;color:var(--teal)}
-  .wcard.feature{background:var(--dark);color:#EAE6F2;border-color:var(--dark)}
-  .wcard.feature h3{color:#fff}
-  .wcard.feature p{color:#BDB4D6}
-  .wcard.feature .kicker,.wcard.feature .go{color:var(--lav)}
-
   .roles{list-style:none;display:grid;border-top:1px solid var(--line)}
   .roles li{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}
   .roles .when{font-family:"IBM Plex Mono",monospace;font-size:13.5px;color:var(--ink-soft);padding-top:3px}
@@ -101,6 +122,13 @@
   @media (max-width:560px){ .roles li{grid-template-columns:1fr;gap:4px} }
   .creds{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
   .cred{font-family:"IBM Plex Mono",monospace;font-size:13px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;color:var(--ink-soft)}
+  .cred.delivery{background:var(--mark-soft);color:var(--ink);border-color:transparent}
+  .cred.strategy{background:var(--dark);color:#fff;border-color:transparent}
+  .cred.both{background:var(--lav);color:#241E38;border-color:transparent}
+  .creds-group{margin-bottom:22px}
+  .creds-group:last-child{margin-bottom:0}
+  .creds-group-label{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:500;margin:36px 0 10px}
+  #work .creds-group-label:first-of-type{margin-top:0}
 
   footer{padding:70px 0 80px}
   footer .card{background:var(--dark);color:#EAE6F2;border-radius:14px;padding:34px 30px;display:flex;gap:26px;align-items:center;flex-wrap:wrap}
@@ -117,9 +145,184 @@
 
 <header class="wrap">
   <p class="eyebrow">Kate Scaife · Learning Architect · Remote (US)</p>
-  <h1>The best way to evaluate a learning designer is to <span class="mark">experience one of her designs.</span></h1>
-  <p class="lede">I build <strong>AI-enabled learning systems</strong>: the roleplays, guided-prompt exercises, and practice loops that get global field teams to mastery. Twenty years in SaaS, currently owning the Splunk Security enablement portfolio at Cisco. This page opens with a working sample.</p>
+  <h1>Two sides of the same coin: <span class="mark">learning design</span> and <span class="mark">adoption strategy.</span></h1>
+  <p class="lede">I build the programs and systems organizations run on, and the learning experiences that build capability. More than 15 years in training and enablement for SaaS companies, currently owning the Splunk Security enablement portfolio at Cisco.</p>
+</header>
 
+<div class="toggle-sentinel" id="toggleSentinel"></div>
+<div class="toggle-wrap" id="toggleWrap">
+  <div class="wrap">
+    <p class="toggle-label">What kind of talent development professional are you looking for?</p>
+    <div class="toggle" role="tablist" aria-label="Filter the page by focus">
+      <button class="toggle-btn active" data-filter="all" role="tab" aria-selected="true">The Whole Package</button>
+      <button class="toggle-btn" data-filter="delivery" role="tab" aria-selected="false">Design &amp; Delivery</button>
+      <button class="toggle-btn" data-filter="strategy" role="tab" aria-selected="false">Strategy &amp; Adoption</button>
+    </div>
+    <p class="toggle-note">Toggle above to see the design-and-delivery craft, the strategy-and-adoption work, or all of it together.</p>
+  </div>
+</div>
+
+<section class="wrap" id="work">
+  <p class="creds-group-label">Splunk, a Cisco Company · 2024–now</p>
+  <div class="acc-list">
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Built and ran an adoption and change-management program</strong> for underused Sales Resource Center capabilities: interviewed the field's heaviest users to learn what drove their own adoption, then built a role-based roadshow, a recurring spotlight, and point-of-need reminders around those patterns. 100%+ increase in usage. <a href="case-src.html">Read the case study →</a></p>
+    </div>
+    <div class="acc-item" data-tag="delivery">
+      <span class="acc-chip delivery">Delivery</span>
+      <p><strong>Designed and launched a two-week workshop</strong> for security solutions architects built on decision-based practice instead of lecture. Rated 4.5/5 across 143 responses. <a href="case-workshop.html">Read the case study →</a></p>
+    </div>
+    <div class="acc-item" data-tag="delivery">
+      <span class="acc-chip delivery">Delivery</span>
+      <p><strong>Rebuilt a 25-page technical SME document</strong> into an 11-module micro-learning series, now rated 5 stars with 500+ completions. <a href="case-ueba.html">Read the case study →</a></p>
+    </div>
+    <div class="acc-item" data-tag="delivery">
+      <span class="acc-chip delivery">Delivery</span>
+      <p><strong>Built the meta-prompt system and full learner experience</strong> behind Splunk's AI roleplay practice series, 377 unique learners, 4.3/5 average across 142 ratings. <a href="case-roleplay.html">Read the case study →</a></p>
+    </div>
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Selected for the tiger team</strong> that designed Global Field Enablement's annual planning process.</p>
+    </div>
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Tapped for the leadership track</strong> at the company's global sales kickoff; that work grew into a seat on the planning team and an on-site request from the VP. Earned a spot bonus and now owns post-event enablement strategy for the sales organization.</p>
+    </div>
+  </div>
+
+  <p class="creds-group-label">Zoom &amp; Solvvy · 2021–2024</p>
+  <div class="acc-list">
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Built a GTM readiness process from scratch</strong>: defined priority tiers, committed deliverables, and a code-freeze cadence that coordinated product, enablement, docs, and marketing into one launch motion. Adopted company-wide in a single cycle. <a href="case-gtm-readiness.html">Read the case study →</a></p>
+    </div>
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Scaled a small team's expertise in the acquired product and its AI capabilities</strong> across a much larger engineering org during an acquisition integration, a self-paced foundation plus expert-led video, so shared time between teams went straight to hard questions instead of the basics.</p>
+    </div>
+    <div class="acc-item" data-tag="delivery">
+      <span class="acc-chip delivery">Delivery</span>
+      <p><strong>Wrote the end-to-end curriculum</strong> for Zoom Virtual Agent's launch as a brand-new product.</p>
+    </div>
+    <div class="acc-item" data-tag="delivery">
+      <span class="acc-chip delivery">Delivery</span>
+      <p><strong>Built Solvvy's first help center from scratch</strong>: SSO, custom branding, 134 articles, 16 videos.</p>
+    </div>
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Senior on the team</strong>; owned a project portfolio and directed junior designers' work. E-learning earned a 4.7/5 average learner rating.</p>
+    </div>
+  </div>
+
+  <p class="creds-group-label">Neon One · 2020–2021</p>
+  <div class="acc-list">
+    <div class="acc-item" data-tag="delivery">
+      <span class="acc-chip delivery">Delivery</span>
+      <p><strong>Built a new product support center from scratch</strong> in six months: 55+ articles, demo videos, microlearning.</p>
+    </div>
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Built the company's first learning-project development system</strong>: intake, feedback loops, and design cycles, standardized across 7 products, and ran the LMS for 4,000+ users.</p>
+    </div>
+  </div>
+
+  <p class="creds-group-label">Eventbrite, Pandora &amp; Ticketfly · 2015–2020</p>
+  <div class="acc-list">
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Mapped customer onboarding to adoption signals</strong>: a rep's congratulations on a first sale triggered marketing-tools materials, using those triggered a custom-branding email, and custom branding moved the account toward a hosted-event-page upsell.</p>
+    </div>
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Built and personally executed the client migration process</strong> after the Ticketfly acquisition (100+ accounts).</p>
+    </div>
+  </div>
+
+  <p class="creds-group-label">ExtremeTix · 2006–2015</p>
+  <div class="acc-list">
+    <div class="acc-item" data-tag="strategy">
+      <span class="acc-chip strategy">Strategy</span>
+      <p><strong>Started training clients on her own initiative</strong> before it was anyone's job. The company created a dedicated training role around it, then built a team of four around her to deliver it, making her its manager.</p>
+    </div>
+  </div>
+
+  <p class="creds-group-label">Career-spanning</p>
+  <div class="acc-list">
+    <div class="acc-item" data-tag="delivery">
+      <span class="acc-chip delivery">Delivery</span>
+      <p><strong>Scripts and produces her own micro-learning videos end to end</strong>, building short, consumable content with narrow, focused objectives. (Solvvy, Neon One, and Splunk's "How I AI" series are the clearest examples.)</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="creds-tools">
+  <p class="sec-label">Certifications &amp; toolkit</p>
+  <p class="sec-note">Tagged the same way as everything above, same toggle.</p>
+  <div class="creds">
+    <span class="cred both" data-tag="both">CPTD · ATD, 2023</span>
+    <span class="cred delivery" data-tag="delivery">Designing Learning · ATD, 2018</span>
+    <span class="cred delivery" data-tag="delivery">Certified Workshop Facilitator · 2020</span>
+    <span class="cred delivery" data-tag="delivery">Articulate 360 / Storyline</span>
+    <span class="cred delivery" data-tag="delivery">Adobe Creative Cloud</span>
+    <span class="cred delivery" data-tag="delivery">Captivate</span>
+    <span class="cred delivery" data-tag="delivery">Camtasia</span>
+    <span class="cred delivery" data-tag="delivery">Vyond</span>
+    <span class="cred delivery" data-tag="delivery">Figma</span>
+    <span class="cred delivery" data-tag="delivery">Canva</span>
+    <span class="cred delivery" data-tag="delivery">Slido</span>
+    <span class="cred both" data-tag="both">LMS administration (LearnUpon, Continu, MindTickle)</span>
+    <span class="cred strategy" data-tag="strategy">Asana</span>
+    <span class="cred strategy" data-tag="strategy">Notion</span>
+    <span class="cred both" data-tag="both">Miro</span>
+    <span class="cred both" data-tag="both">Claude Code &amp; LLM prompt design</span>
+  </div>
+</section>
+
+<section class="wrap" id="samples">
+  <p class="sec-label">Work samples</p>
+  <div class="work">
+    <a class="wcard feature" href="game.html" data-tag="delivery">
+      <p class="kicker">Playable · 3 minutes</p>
+      <h3>Signal &amp; Noise: a detection curation game</h3>
+      <p>You're the solutions architect: 48 detections, a fictional retailer, a SOC that can absorb 35 alerts a day. Enable the right portfolio before the clock runs out. Built for a global enablement workshop and recreated here, scaled down, with a fictional customer.</p>
+      <span class="go">Play it →</span>
+    </a>
+    <a class="wcard" href="case-workshop.html" data-tag="delivery">
+      <p class="kicker">Case study · Program design</p>
+      <h3>Teaching judgment: a two-week workshop for security solutions architects</h3>
+      <p>Leadership wanted better custom demos and stronger POV win rates. The design answer: one fictional customer carried through every session, decision points instead of lectures, and a 4.5/5 rating across 143 responses.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-ueba.html" data-tag="delivery">
+      <p class="kicker">Case study · Content transformation</p>
+      <h3>From encyclopedia to learning experience: converting a 25-page SME brain dump</h3>
+      <p>A technically excellent but totally passive 25-page document became an 11-module micro-learning series with role-based journeys, now holding a 5-star rating with 500+ completions, and an SME who became a repeat design partner.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-roleplay.html" data-tag="delivery">
+      <p class="kicker">Case study · AI-powered learning experience design</p>
+      <h3>Building the field's AI roleplay practice system</h3>
+      <p>MindTickle shipped AI roleplay as a new capability; nobody knew what "good" looked like yet. A meta-prompt system, a designed learner experience, and a standard grading rubric took it from experiment to 377 unique learners and a 4.3/5 rating.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-src.html" data-tag="strategy">
+      <p class="kicker">Case study · Adoption &amp; change management</p>
+      <h3>Turning a platform nobody used into 100%+ adoption</h3>
+      <p>A new content platform with real capabilities sat unused while the field kept its old habits. Content, platform-level nudges, a live roadshow, and recurring reinforcement, working as one system, closed the gap.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-gtm-readiness.html" data-tag="strategy">
+      <p class="kicker">Case study · Process design</p>
+      <h3>Getting one team to a shared definition of "ready"</h3>
+      <p>No shared standard for what a release needed before it shipped. Defined tiers, defined deliverables, and a code-freeze cadence turned inconsistent launches into one coordinated motion, adopted company-wide within a cycle.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+  </div>
+</section>
+
+<section class="wrap" id="briefing">
+  <p class="sec-label">One more way to explore this</p>
   <div class="console">
     <p class="eyebrow">A guided-prompt exercise · a modality I spearheaded for a global field org</p>
     <h2>Brief your AI on me.</h2>
@@ -137,69 +340,7 @@
       <summary>View the full prompt (nothing up my sleeve)</summary>
       <pre id="promptText"></pre>
     </details>
-    <p class="fineprint">Prefer not to use AI tools for candidate review? Everything the briefing knows is on this page, in the case studies below, and in my resume.</p>
-  </div>
-</header>
-
-<section class="wrap" id="samples">
-  <p class="sec-label">Work samples</p>
-  <div class="work">
-    <a class="wcard feature" href="game.html">
-      <p class="kicker">Playable · 3 minutes</p>
-      <h3>Signal &amp; Noise: a detection curation game</h3>
-      <p>You're the solutions architect: 48 detections, a fictional retailer, a SOC that can absorb 35 alerts a day. Enable the right portfolio before the clock runs out. Built for a global enablement workshop and recreated here, scaled down, with a fictional customer.</p>
-      <span class="go">Play it →</span>
-    </a>
-    <a class="wcard" href="case-workshop.html">
-      <p class="kicker">Case study · Program design</p>
-      <h3>Teaching judgment: a two-week workshop for security solutions architects</h3>
-      <p>Leadership wanted better custom demos and stronger POV win rates. The design answer: one fictional customer carried through every session, decision points instead of lectures, and a 4.5/5 rating across 143 responses.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-ueba.html">
-      <p class="kicker">Case study · Content transformation</p>
-      <h3>From encyclopedia to learning experience: converting a 25-page SME brain dump</h3>
-      <p>A technically excellent but totally passive 25-page document became an 11-module micro-learning series with role-based journeys, now holding a 5-star rating with 500+ completions, and an SME who became a repeat design partner.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-  </div>
-</section>
-
-<section class="wrap" id="work">
-  <p class="sec-label">What I build</p>
-  <div class="pillars">
-    <div class="pillar-item">
-      <h3 class="pillar">AI as the delivery surface</h3>
-      <p>I wrote the <strong>field-wide AI adoption curriculum</strong> for a global sales organization: prompt writing, choosing the right AI tool for the job, and weaving AI into daily seller workflows. I also design the modalities where AI is the practice surface, from <span class="mark">2-way AI roleplays</span> and customer engagement simulations to guided-prompt exercises like the one above, and I set my team's standard for AI roleplay creation, writing the build materials and guided prompts used across our learning experiences.</p>
-    </div>
-    <div class="pillar-item">
-      <h3 class="pillar">Judgment over steps</h3>
-      <p>My recent <strong>two-week workshop for security solutions architects</strong> was built on hands-on labs, peer knowledge-sharing, and scenarios that train decision-making, not click-along instructions. It rated <span class="mark">4.5/5 across 143 responses</span>.</p>
-    </div>
-    <div class="pillar-item">
-      <h3 class="pillar">Builder of builders</h3>
-      <p>I create the systems other people work within: learning intake processes, GTM enablement frameworks, annual planning processes, LMS implementations serving <span class="mark">employees, customers, and partners</span>, plus the templates and standards that keep quality high without me in the loop.</p>
-    </div>
-    <div class="pillar-item">
-      <h3 class="pillar">SME translation</h3>
-      <p>Twenty years of partnering with engineers, product marketers, and principal solution specialists to turn dense expertise into learning people actually use, most recently authoring the curriculum that ramps <strong>all Cisco sales engineers on Splunk</strong>.</p>
-    </div>
-  </div>
-</section>
-
-<section class="wrap" id="background">
-  <p class="sec-label">Background</p>
-  <ul class="roles">
-    <li><span class="when">2024 – now</span><div class="what"><strong>Splunk, a Cisco Company</strong><span>Instructional Designer, Technical Sellers · owns the Splunk Security enablement portfolio for the global field</span></div></li>
-    <li><span class="when">2021 – 2024</span><div class="what"><strong>Zoom &amp; Solvvy</strong><span>Instructional Designer · joined via acquisition; ramped Zoom teams on Solvvy's conversational AI</span></div></li>
-    <li><span class="when">2020 – 2021</span><div class="what"><strong>Neon One</strong><span>Customer Enablement Program Manager · e-learning sold as a revenue-generating upsell</span></div></li>
-    <li><span class="when">2015 – 2020</span><div class="what"><strong>Eventbrite, Pandora &amp; Ticketfly</strong><span>Sales Enablement Program Manager</span></div></li>
-    <li><span class="when">2006 – 2015</span><div class="what"><strong>ExtremeTix</strong><span>Equipment Operations &amp; Training Manager · built client training from the ground up</span></div></li>
-  </ul>
-  <div class="creds">
-    <span class="cred">CPTD · ATD, 2023</span>
-    <span class="cred">Designing Learning · ATD, 2018</span>
-    <span class="cred">Certified Workshop Facilitator · 2020</span>
+    <p class="fineprint">Prefer not to use AI tools for candidate review? Everything the briefing knows is on this page, in the case studies above, and in my resume.</p>
   </div>
 </section>
 
@@ -218,6 +359,28 @@
 </footer>
 
 <script>
+const toggleBtns = document.querySelectorAll('.toggle-btn');
+const taggedEls = document.querySelectorAll('[data-tag]');
+toggleBtns.forEach(btn => btn.addEventListener('click', () => {
+  toggleBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+  btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+  const f = btn.dataset.filter;
+  taggedEls.forEach(el => {
+    const tag = el.dataset.tag;
+    const match = f === 'all' || tag === f || tag === 'both';
+    el.classList.toggle('dim', !match);
+  });
+}));
+
+const toggleSentinel = document.getElementById('toggleSentinel');
+const toggleWrapEl = document.getElementById('toggleWrap');
+if (toggleSentinel && toggleWrapEl && 'IntersectionObserver' in window) {
+  const stuckObserver = new IntersectionObserver(([entry]) => {
+    toggleWrapEl.classList.toggle('stuck', !entry.isIntersecting);
+  }, { threshold: 0 });
+  stuckObserver.observe(toggleSentinel);
+}
+
 const BRIEFING_PROMPT = `<role>
 You are Kate Scaife's briefing assistant. The person you're talking to is likely a recruiter, hiring manager, or interviewer evaluating Kate for a learning architecture / enablement leadership role. Kate designed this guided-prompt experience herself, it's one of the learning modalities she builds professionally, so treat this conversation as both a briefing and a live work sample.
 </role>
@@ -312,7 +475,6 @@ WORKING STYLE: Kate is a team player, "if one succeeds, we all succeed", and you
 </suggested_questions>
 
 Begin with the ORIENT step.`;
-
 document.getElementById('promptText').textContent = BRIEFING_PROMPT;
 const btn = document.getElementById('copyBtn');
 btn.addEventListener('click', async () => {
