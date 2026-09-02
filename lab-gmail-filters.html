@@ -11,10 +11,8 @@
 .lab-intro{max-width:66ch}
 .lab-badge{display:inline-flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:6px 14px;margin:4px 0 28px}
 .lab-badge span{color:var(--teal)}
-
 .lab{display:grid;grid-template-columns:200px 1fr;gap:32px;margin:8px 0 30px;align-items:start}
 @media (max-width:640px){.lab{grid-template-columns:1fr}}
-
 .steps{display:flex;flex-direction:column;gap:24px;position:sticky;top:24px}
 .step{display:flex;align-items:flex-start;gap:12px}
 .step-circle{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all .25s ease;background:transparent}
@@ -24,12 +22,10 @@
 .step.done .step-circle::before{content:"\2713"}
 .step-label{font-size:14.5px;color:var(--ink-soft);padding-top:5px;transition:color .25s ease}
 .step.active .step-label,.step.done .step-label{color:var(--ink);font-weight:600}
-
 .screen-panel{background:#FFFFFF;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08)}
 .scene.on{display:block}
-
 /* mail chrome */
-.mail-top{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper)}.mail-logo{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:#cbcbcb(--ink)}
+.mail-top{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper)}.mail-logo{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--ink)}
 .mail-logo svg{flex:none}
 .mail-search{flex:1;height:34px;border-radius:999px;background:rgba(120,120,140,.09);border:1px solid var(--line)}
 .mail-compose{font-family:"Public Sans",sans-serif;font-size:13px;font-weight:700;background:#3E6BF0;color:#fff;border:none;border-radius:20px;padding:9px 18px;cursor:pointer;flex:none}
@@ -37,7 +33,6 @@
 .mail-gear-btn:hover{border-color:var(--teal);color:var(--teal)}
 .mail-gear-btn.pulse{animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(62,143,145,.35)}50%{box-shadow:0 0 0 7px rgba(62,143,145,0)}}
-
 .mail-body{position:relative;min-height:340px}
 .mail-list{padding:6px 0}
 .mail-row{display:flex;align-items:center;gap:14px;padding:13px 20px;border-bottom:1px solid var(--line);cursor:default}
@@ -48,13 +43,11 @@
 .mail-from{font-size:14px;font-weight:700;color:var(--ink);width:150px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mail-subject{font-size:14px;color:var(--body);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mail-time{font-size:12px;color:var(--ink-soft);flex:none}
-
-.dropdown{position:absolute;top:8px;right:16px;width:230px;background:#cbcbcb(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 26px rgba(0,0,0,.16);overflow:hidden;z-index:5}
+.dropdown{position:absolute;top:8px;right:16px;width:230px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 26px rgba(0,0,0,.16);overflow:hidden;z-index:5}
 .dd-item{display:block;width:100%;text-align:left;background:none;border:none;padding:12px 16px;font-family:"Public Sans",sans-serif;font-size:13.5px;color:var(--body);cursor:pointer;border-bottom:1px solid var(--line)}
 .dd-item:last-child{border-bottom:none}
 .dd-item:hover{background:rgba(62,143,145,.09);color:var(--ink)}
 .dd-item.primary{color:var(--teal);font-weight:700}
-
 .tabs-row{display:flex;flex-wrap:wrap;gap:2px;padding:16px 18px 0;border-bottom:1px solid var(--line)}
 .tab-btn{font-family:"IBM Plex Mono",monospace;font-size:12px;background:none;border:none;border-bottom:3px solid transparent;padding:10px 12px;color:var(--ink-soft);cursor:pointer}
 .tab-btn:hover{color:var(--ink)}
@@ -64,7 +57,6 @@
 .tab-panel p.hint{color:var(--ink-soft);font-size:14px;margin-bottom:16px}
 .link-btn{font-family:"Public Sans",sans-serif;font-weight:700;font-size:14px;color:var(--teal);background:none;border:none;cursor:pointer;padding:0}
 .link-btn:hover{text-decoration:underline}
-
 .form-panel{padding:24px 22px}
 .form-row{margin-bottom:14px}
 .form-row label{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
@@ -73,22 +65,18 @@
 .btn{font-family:"Public Sans",sans-serif;font-size:13.5px;font-weight:700;border-radius:8px;padding:10px 18px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink)}
 .btn.primary{background:#3E6BF0;border-color:#3E6BF0;color:#fff}
 .btn:hover{filter:brightness(1.05)}
-
 .check-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
 .check-row:last-of-type{border-bottom:none}
 .check-row input{margin-top:3px}
 .check-row .cl-label{font-size:14px;color:var(--ink)}
 .check-row .cl-sub{font-size:12.5px;color:var(--ink-soft)}
-
 .success{padding:44px 26px;text-align:center}
 .success .tick{width:56px;height:56px;border-radius:50%;background:var(--teal);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
 .success h3{font-family:"Fraunces",serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:10px}
 .success p{max-width:44ch;margin:0 auto 20px;color:var(--body)}
-
 .lab-feedback{margin:0;padding:13px 18px;border-top:1px solid var(--line);background:var(--mark-soft);font-size:13.5px;color:var(--ink);display:none}
 .lab-feedback.show{display:block}
 .lab-feedback strong{color:var(--ink)}
-
 .lab-caption{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-soft);margin-top:12px}
 </style>
 </head>
@@ -98,14 +86,10 @@
 <p class="eyebrow">Interactive practice · Design &amp; delivery</p>
 <h1>A filters lab, built to be broken</h1>
 <p class="meta">Original practice module · built for this portfolio</p>
-
 <p class="lab-intro">The vast majority of my past work is the IP of the employers I built it for, so I created this simple, small-scale example of my design approach, rather than just describing it. This short practice lab walks through setting up an email filter on a popular and a free, public product. Many similarly built learning experiences over-guide the user or even prvent them from clicking anything other than the right object. I've always felt that approach limits the staying power of the knowledge you're trying to transfer. Instead, I create learning experiences where the user has little guidance, and can make the wrong choice and either see the result or recieve feedback. These experiences are closer to a lab than a click-through.</p>
 <div class="lab-badge">Recreated interface for demonstration <span>·</span> not affiliated with with any mail provider</div>
-
   <hr style="border:none;border-top:1px solid var(--line);margin:24px 0">
-
 <p class="lab-intro"><strong>The task:</strong> a newsletter is burying your inbox. Set up a filter so future emails from it skip the inbox and file themselves away automatically.</p>
-
 <div class="lab">
   <div class="steps" id="steps">
     <div class="step" data-i="1"><div class="step-circle" data-num="1"></div><div class="step-label">Open Settings</div></div>
@@ -114,10 +98,8 @@
     <div class="step" data-i="4"><div class="step-circle" data-num="4"></div><div class="step-label">Set What to Match</div></div>
     <div class="step" data-i="5"><div class="step-circle" data-num="5"></div><div class="step-label">Choose What Happens</div></div>
   </div>
-
   <div>
   <div class="screen-panel">
-
     <!-- Scene: inbox -->
     <div class="scene on" id="scene-inbox">
       <div class="mail-top">
@@ -142,7 +124,6 @@
         </div>
       </div>
     </div>
-
     <!-- Scene: tabs -->
     <div class="scene" id="scene-tabs">
       <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
@@ -158,7 +139,6 @@
         <p class="hint">Where would the rule that automatically handles TechDaily's newsletter live?</p>
       </div>
     </div>
-
     <!-- Scene: filters tab -->
     <div class="scene" id="scene-filterstab">
       <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
@@ -169,7 +149,6 @@
         <button class="link-btn" type="button" id="toCriteria">Create a new filter</button>
       </div>
     </div>
-
     <!-- Scene: criteria -->
     <div class="scene" id="scene-criteria">
       <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
@@ -184,7 +163,6 @@
         </div>
       </div>
     </div>
-
     <!-- Scene: actions -->
     <div class="scene" id="scene-actions">
       <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
@@ -199,7 +177,6 @@
         </div>
       </div>
     </div>
-
     <!-- Scene: success -->
     <div class="scene" id="scene-success">
       <div class="success">
@@ -209,23 +186,18 @@
         <button class="btn" type="button" id="toRestart">Restart the lab</button>
       </div>
     </div>
-
     <p class="lab-feedback" id="feedback"></p>
   </div>
   <p class="lab-caption">Click through it. Wrong turns get feedback, not a dead end.</p>
   </div>
 </div>
-
 <h2>Why this exists</h2>
 <p>Most of the case studies on this site are proof from inside a company: things I built for a real team with real constraints. This one is different on purpose. When I couldn't show screenshots of client or employer work without permission I didn't have, I built something new instead of describing my approach in the abstract. It's a small piece, but it's real: a working decision-based interaction, not a mockup of one.</p>
-
 <footer>Kate Scaife · <a href="mailto:krscaife@gmail.com">krscaife@gmail.com</a> · <a href="index.html">Back to portfolio</a></footer>
 </div>
-
 <script>
 const MILESTONES = 5;
 let current = 1;
-
 function setMilestone(n){
   current = n;
   document.querySelectorAll('.step').forEach(el=>{
@@ -238,13 +210,11 @@ function setMilestone(n){
     document.querySelectorAll('.step').forEach(el=>el.classList.add('done'));
   }
 }
-
 function showScene(id){
   document.querySelectorAll('.scene').forEach(s=>s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
   hideFeedback();
 }
-
 function showFeedback(html){
   const f = document.getElementById('feedback');
   f.innerHTML = html;
@@ -254,7 +224,6 @@ function hideFeedback(){
   const f = document.getElementById('feedback');
   f.classList.remove('show');
 }
-
 // Scene: inbox
 document.getElementById('gearBtn').addEventListener('click', ()=>{
   document.getElementById('gearBtn').classList.remove('pulse');
@@ -270,7 +239,6 @@ document.getElementById('toAllSettings').addEventListener('click', ()=>{
   setMilestone(2);
   showScene('scene-tabs');
 });
-
 // Scene: tabs
 document.querySelectorAll('#scene-tabs [data-decoy]').forEach(b=>{
   b.addEventListener('click', ()=>{
@@ -285,13 +253,11 @@ document.getElementById('toFiltersTab').addEventListener('click', ()=>{
   setMilestone(3);
   showScene('scene-filterstab');
 });
-
 // Scene: filters tab
 document.getElementById('toCriteria').addEventListener('click', ()=>{
   setMilestone(4);
   showScene('scene-criteria');
 });
-
 // Scene: criteria
 document.querySelector('#scene-criteria [data-decoy="search"]').addEventListener('click', ()=>{
   showFeedback('<strong>Search would just show matching mail right now.</strong> To build the ongoing rule, use "Create filter."');
@@ -300,7 +266,6 @@ document.getElementById('toActions').addEventListener('click', ()=>{
   setMilestone(5);
   showScene('scene-actions');
 });
-
 // Scene: actions
 document.getElementById('toSuccess').addEventListener('click', ()=>{
   const skip = document.getElementById('cbSkip').checked;
@@ -317,7 +282,6 @@ document.getElementById('toSuccess').addEventListener('click', ()=>{
   setMilestone(6);
   showScene('scene-success');
 });
-
 document.getElementById('toRestart').addEventListener('click', ()=>{
   document.getElementById('cbSkip').checked = false;
   document.getElementById('cbLabel').checked = false;
@@ -327,7 +291,6 @@ document.getElementById('toRestart').addEventListener('click', ()=>{
   setMilestone(1);
   showScene('scene-inbox');
 });
-
 setMilestone(1);
 </script>
 </body>
