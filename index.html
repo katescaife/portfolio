@@ -41,7 +41,7 @@
   a{color:var(--teal)}
   a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:2px}
 
-  header{padding:56px 0 0}
+  header.wrap{padding-top:56px}
   .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:500}
   h1{font-family:"Fraunces",serif;font-optical-sizing:auto;font-weight:600;font-size:clamp(34px,6.4vw,52px);line-height:1.1;letter-spacing:-0.015em;margin:14px 0 22px}
   .mark{background:linear-gradient(104deg, transparent 2%, var(--mark-soft) 3%, var(--mark-soft) 97%, transparent 98%);padding:0 .1em}
@@ -66,7 +66,7 @@
   [data-tag]{transition:opacity .45s ease, filter .45s ease}
   [data-tag].dim{opacity:.34;filter:saturate(.45)}
 
-  section{padding:64px 0 8px}
+  section.wrap{padding-top:64px;padding-bottom:8px}
   .sec-label{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:500;display:flex;align-items:center;gap:14px;margin-bottom:8px}
   .sec-label::after{content:"";height:1px;background:var(--line);flex:1}
   .sec-note{color:var(--ink-soft);font-size:15px;margin-bottom:26px;max-width:60ch}
@@ -93,7 +93,9 @@
   .wcard.feature h3{color:#fff}
   .wcard.feature p{color:#BDB4D6}
   .wcard.feature .kicker,.wcard.feature .go{color:var(--lav)}
-  .wcard .thumb{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top center;border-radius:8px;margin-bottom:14px;display:block;background:var(--line)}
+  .wcard-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .samples-to-work{display:flex;align-items:center;gap:16px;margin:56px 0 34px;color:var(--ink-soft);font-size:14px}
+  .samples-to-work::before,.samples-to-work::after{content:"";height:1px;background:var(--line);flex:1}
 
   /* dark console — deep purple */
   .console{margin:0;background:var(--dark);color:#EAE6F2;border-radius:14px;padding:34px 30px 30px;position:relative;overflow:hidden}
@@ -131,7 +133,7 @@
   .creds-group-label{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:500;margin:36px 0 10px}
   #work .creds-group-label:first-of-type{margin-top:0}
 
-  footer{padding:70px 0 80px}
+  footer.wrap{padding-top:70px;padding-bottom:80px}
   footer .card{background:var(--dark);color:#EAE6F2;border-radius:14px;padding:34px 30px;display:flex;gap:26px;align-items:center;flex-wrap:wrap}
   .avatar{width:112px;height:112px;border-radius:50%;object-fit:cover;border:3px solid var(--lav);flex:none}
   footer .card > div{min-width:240px;flex:1}
@@ -150,6 +152,73 @@
   <p class="lede">I build the programs and systems organizations run on, and the learning experiences that build capability. More than 15 years in training and enablement for SaaS companies, currently owning the Splunk Security enablement portfolio at Cisco.</p>
 </header>
 
+<section class="wrap" id="samples">
+  <p class="sec-label">Work samples</p>
+  <div class="work">
+    <a class="wcard" href="lab-gmail-filters.html" target="_blank" rel="noopener">
+      <p class="kicker">Interactive practice · 2 minutes</p>
+      <h3>A filters lab, built to be broken</h3>
+      <p>An original practice module, not client or employer work: a decision-based walkthrough of setting up an email filter, built to demonstrate the same design approach behind the case studies below. Click the wrong thing on purpose and see what happens.</p>
+      <span class="go">Try it →</span>
+    </a>
+    <a class="wcard" href="onepager-solvvy-bot-practices.jpg" target="_blank" rel="noopener">
+      <p class="kicker">One-pager · Solvvy</p>
+      <h3>Conversational bot best practices</h3>
+      <p>Written and designed solo: message-length guidance backed by a real behavioral example, and a before/after pattern for turning a wall of text into an actual back-and-forth conversation.</p>
+      <span class="go">View the one-pager →</span>
+    </a>
+    <a class="wcard" href="https://youtu.be/RPSD37Lu7cg" target="_blank" rel="noopener">
+      <p class="kicker">Video · Zoom</p>
+      <h3>Zoom Virtual Agent: setting up intents</h3>
+      <p>Part of the end-to-end curriculum written for Zoom Virtual Agent's launch: a product training video walking through how intents, the things a user might be trying to accomplish, get configured for the bot to recognize. Still live on Zoom's own YouTube channel.</p>
+      <span class="go">Watch on YouTube →</span>
+    </a>
+    <a class="wcard" href="game.html" target="_blank" rel="noopener">
+      <p class="kicker">Playable · 3 minutes</p>
+      <h3>Signal &amp; Noise: a detection curation game</h3>
+      <p>You're the solutions architect: 48 detections, a fictional retailer, a SOC that can absorb 35 alerts a day. Enable the right portfolio before the clock runs out. Built for a global enablement workshop and recreated here, scaled down, with a fictional customer.</p>
+      <span class="go">Play it →</span>
+    </a>
+  </div>
+</section>
+
+<section class="wrap" id="case-studies">
+  <p class="sec-label">Case studies</p>
+  <div class="work">
+    <a class="wcard" href="case-workshop.html">
+      <p class="kicker">Case study · Program design</p>
+      <h3>Teaching judgment: a two-week workshop for security solutions architects</h3>
+      <p>Leadership wanted better custom demos and stronger POV win rates. The design answer: one fictional customer carried through every session, decision points instead of lectures, and a 4.5/5 rating across 143 responses.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-ueba.html">
+      <p class="kicker">Case study · Content transformation</p>
+      <h3>From encyclopedia to learning experience: converting a 25-page SME brain dump</h3>
+      <p>A technically excellent but totally passive 25-page document became an 11-module micro-learning series with role-based journeys, now holding a 5-star rating with 500+ completions, and an SME who became a repeat design partner.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-roleplay.html">
+      <p class="kicker">Case study · AI-powered learning experience design</p>
+      <h3>Building the field's AI roleplay practice system</h3>
+      <p>MindTickle shipped AI roleplay as a new capability; nobody knew what "good" looked like yet. A meta-prompt system, a designed learner experience, and a standard grading rubric took it from experiment to 377 unique learners and a 4.3/5 rating.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-src.html">
+      <p class="kicker">Case study · Adoption &amp; change management</p>
+      <h3>Turning a platform nobody used into 100%+ adoption</h3>
+      <p>A new content platform with real capabilities sat unused while the field kept its old habits. Content, platform-level nudges, a live roadshow, and recurring reinforcement, working as one system, closed the gap.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-gtm-readiness.html">
+      <p class="kicker">Case study · Process design</p>
+      <h3>Getting one team to a shared definition of "ready"</h3>
+      <p>No shared standard for what a release needed before it shipped. Defined tiers, defined deliverables, and a code-freeze cadence turned inconsistent launches into one coordinated motion, adopted company-wide within a cycle.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+  </div>
+</section>
+
+<div class="wrap"><div class="samples-to-work"><span>That's the highlight reel. Here's the fuller record, and a way to look at it through either lens:</span></div></div>
 <div class="toggle-sentinel" id="toggleSentinel"></div>
 <div class="toggle-wrap" id="toggleWrap">
   <div class="wrap">
@@ -162,74 +231,6 @@
     <p class="toggle-note">Toggle above to see the design-and-delivery craft, the strategy-and-adoption work, or all of it together.</p>
   </div>
 </div>
-
-<section class="wrap" id="samples">
-  <p class="sec-label">Work samples</p>
-  <div class="work">
-    <a class="wcard feature" href="game.html" data-tag="delivery">
-      <p class="kicker">Playable · 3 minutes</p>
-      <h3>Signal &amp; Noise: a detection curation game</h3>
-      <p>You're the solutions architect: 48 detections, a fictional retailer, a SOC that can absorb 35 alerts a day. Enable the right portfolio before the clock runs out. Built for a global enablement workshop and recreated here, scaled down, with a fictional customer.</p>
-      <span class="go">Play it →</span>
-    </a>
-    <a class="wcard" href="lab-gmail-filters.html" data-tag="delivery">
-      <p class="kicker">Interactive practice · 2 minutes</p>
-      <h3>A filters lab, built to be broken</h3>
-      <p>An original practice module, not client or employer work: a decision-based walkthrough of setting up an email filter, built to demonstrate the same design approach behind the case studies below. Click the wrong thing on purpose and see what happens.</p>
-      <span class="go">Try it →</span>
-    </a>
-    <a class="wcard" href="onepager-solvvy-bot-practices.jpg" target="_blank" rel="noopener" data-tag="delivery">
-      <img class="thumb" src="onepager-solvvy-bot-practices.jpg" alt="Conversational Bot Best Practices one-pager">
-      <p class="kicker">One-pager · Solvvy</p>
-      <h3>Conversational bot best practices</h3>
-      <p>Written and designed solo: message-length guidance backed by a real behavioral example, and a before/after pattern for turning a wall of text into an actual back-and-forth conversation.</p>
-      <span class="go">View the one-pager →</span>
-    </a>
-    <a class="wcard" href="https://youtu.be/RPSD37Lu7cg" target="_blank" rel="noopener" data-tag="delivery">
-      <img class="thumb" src="https://img.youtube.com/vi/RPSD37Lu7cg/hqdefault.jpg" alt="Zoom Virtual Agent product training video">
-      <p class="kicker">Video · Zoom</p>
-      <h3>Zoom Virtual Agent: setting up intents</h3>
-      <p>Part of the end-to-end curriculum written for Zoom Virtual Agent's launch: a product training video walking through how intents, the things a user might be trying to accomplish, get configured for the bot to recognize. Still live on Zoom's own YouTube channel.</p>
-      <span class="go">Watch on YouTube →</span>
-    </a>
-  </div>
-</section>
-
-<section class="wrap" id="case-studies">
-  <p class="sec-label">Case studies</p>
-  <div class="work">
-    <a class="wcard" href="case-workshop.html" data-tag="delivery">
-      <p class="kicker">Case study · Program design</p>
-      <h3>Teaching judgment: a two-week workshop for security solutions architects</h3>
-      <p>Leadership wanted better custom demos and stronger POV win rates. The design answer: one fictional customer carried through every session, decision points instead of lectures, and a 4.5/5 rating across 143 responses.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-ueba.html" data-tag="delivery">
-      <p class="kicker">Case study · Content transformation</p>
-      <h3>From encyclopedia to learning experience: converting a 25-page SME brain dump</h3>
-      <p>A technically excellent but totally passive 25-page document became an 11-module micro-learning series with role-based journeys, now holding a 5-star rating with 500+ completions, and an SME who became a repeat design partner.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-roleplay.html" data-tag="delivery">
-      <p class="kicker">Case study · AI-powered learning experience design</p>
-      <h3>Building the field's AI roleplay practice system</h3>
-      <p>MindTickle shipped AI roleplay as a new capability; nobody knew what "good" looked like yet. A meta-prompt system, a designed learner experience, and a standard grading rubric took it from experiment to 377 unique learners and a 4.3/5 rating.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-src.html" data-tag="strategy">
-      <p class="kicker">Case study · Adoption &amp; change management</p>
-      <h3>Turning a platform nobody used into 100%+ adoption</h3>
-      <p>A new content platform with real capabilities sat unused while the field kept its old habits. Content, platform-level nudges, a live roadshow, and recurring reinforcement, working as one system, closed the gap.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-gtm-readiness.html" data-tag="strategy">
-      <p class="kicker">Case study · Process design</p>
-      <h3>Getting one team to a shared definition of "ready"</h3>
-      <p>No shared standard for what a release needed before it shipped. Defined tiers, defined deliverables, and a code-freeze cadence turned inconsistent launches into one coordinated motion, adopted company-wide within a cycle.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-  </div>
-</section>
 
 <section class="wrap" id="work">
   <p class="creds-group-label">Splunk, a Cisco Company · 2024–now</p>
