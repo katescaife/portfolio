@@ -93,6 +93,7 @@
   .wcard.feature h3{color:#fff}
   .wcard.feature p{color:#BDB4D6}
   .wcard.feature .kicker,.wcard.feature .go{color:var(--lav)}
+  .wcard .thumb{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top center;border-radius:8px;margin-bottom:14px;display:block;background:var(--line)}
 
   /* dark console — deep purple */
   .console{margin:0;background:var(--dark);color:#EAE6F2;border-radius:14px;padding:34px 30px 30px;position:relative;overflow:hidden}
@@ -161,6 +162,74 @@
     <p class="toggle-note">Toggle above to see the design-and-delivery craft, the strategy-and-adoption work, or all of it together.</p>
   </div>
 </div>
+
+<section class="wrap" id="samples">
+  <p class="sec-label">Work samples</p>
+  <div class="work">
+    <a class="wcard feature" href="game.html" data-tag="delivery">
+      <p class="kicker">Playable · 3 minutes</p>
+      <h3>Signal &amp; Noise: a detection curation game</h3>
+      <p>You're the solutions architect: 48 detections, a fictional retailer, a SOC that can absorb 35 alerts a day. Enable the right portfolio before the clock runs out. Built for a global enablement workshop and recreated here, scaled down, with a fictional customer.</p>
+      <span class="go">Play it →</span>
+    </a>
+    <a class="wcard" href="lab-gmail-filters.html" data-tag="delivery">
+      <p class="kicker">Interactive practice · 2 minutes</p>
+      <h3>A filters lab, built to be broken</h3>
+      <p>An original practice module, not client or employer work: a decision-based walkthrough of setting up an email filter, built to demonstrate the same design approach behind the case studies below. Click the wrong thing on purpose and see what happens.</p>
+      <span class="go">Try it →</span>
+    </a>
+    <a class="wcard" href="onepager-solvvy-bot-practices.jpg" target="_blank" rel="noopener" data-tag="delivery">
+      <img class="thumb" src="onepager-solvvy-bot-practices.jpg" alt="Conversational Bot Best Practices one-pager">
+      <p class="kicker">One-pager · Solvvy</p>
+      <h3>Conversational bot best practices</h3>
+      <p>Written and designed solo: message-length guidance backed by a real behavioral example, and a before/after pattern for turning a wall of text into an actual back-and-forth conversation.</p>
+      <span class="go">View the one-pager →</span>
+    </a>
+    <a class="wcard" href="https://youtu.be/RPSD37Lu7cg" target="_blank" rel="noopener" data-tag="delivery">
+      <img class="thumb" src="https://img.youtube.com/vi/RPSD37Lu7cg/hqdefault.jpg" alt="Zoom Virtual Agent product training video">
+      <p class="kicker">Video · Zoom</p>
+      <h3>Zoom Virtual Agent: setting up intents</h3>
+      <p>Part of the end-to-end curriculum written for Zoom Virtual Agent's launch: a product training video walking through how intents, the things a user might be trying to accomplish, get configured for the bot to recognize. Still live on Zoom's own YouTube channel.</p>
+      <span class="go">Watch on YouTube →</span>
+    </a>
+  </div>
+</section>
+
+<section class="wrap" id="case-studies">
+  <p class="sec-label">Case studies</p>
+  <div class="work">
+    <a class="wcard" href="case-workshop.html" data-tag="delivery">
+      <p class="kicker">Case study · Program design</p>
+      <h3>Teaching judgment: a two-week workshop for security solutions architects</h3>
+      <p>Leadership wanted better custom demos and stronger POV win rates. The design answer: one fictional customer carried through every session, decision points instead of lectures, and a 4.5/5 rating across 143 responses.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-ueba.html" data-tag="delivery">
+      <p class="kicker">Case study · Content transformation</p>
+      <h3>From encyclopedia to learning experience: converting a 25-page SME brain dump</h3>
+      <p>A technically excellent but totally passive 25-page document became an 11-module micro-learning series with role-based journeys, now holding a 5-star rating with 500+ completions, and an SME who became a repeat design partner.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-roleplay.html" data-tag="delivery">
+      <p class="kicker">Case study · AI-powered learning experience design</p>
+      <h3>Building the field's AI roleplay practice system</h3>
+      <p>MindTickle shipped AI roleplay as a new capability; nobody knew what "good" looked like yet. A meta-prompt system, a designed learner experience, and a standard grading rubric took it from experiment to 377 unique learners and a 4.3/5 rating.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-src.html" data-tag="strategy">
+      <p class="kicker">Case study · Adoption &amp; change management</p>
+      <h3>Turning a platform nobody used into 100%+ adoption</h3>
+      <p>A new content platform with real capabilities sat unused while the field kept its old habits. Content, platform-level nudges, a live roadshow, and recurring reinforcement, working as one system, closed the gap.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+    <a class="wcard" href="case-gtm-readiness.html" data-tag="strategy">
+      <p class="kicker">Case study · Process design</p>
+      <h3>Getting one team to a shared definition of "ready"</h3>
+      <p>No shared standard for what a release needed before it shipped. Defined tiers, defined deliverables, and a code-freeze cadence turned inconsistent launches into one coordinated motion, adopted company-wide within a cycle.</p>
+      <span class="go">Read the case study →</span>
+    </a>
+  </div>
+</section>
 
 <section class="wrap" id="work">
   <p class="creds-group-label">Splunk, a Cisco Company · 2024–now</p>
@@ -276,48 +345,6 @@
     <span class="cred strategy" data-tag="strategy">Notion</span>
     <span class="cred both" data-tag="both">Miro</span>
     <span class="cred both" data-tag="both">Claude Code &amp; LLM prompt design</span>
-  </div>
-</section>
-
-<section class="wrap" id="samples">
-  <p class="sec-label">Work samples</p>
-  <div class="work">
-    <a class="wcard feature" href="game.html" data-tag="delivery">
-      <p class="kicker">Playable · 3 minutes</p>
-      <h3>Signal &amp; Noise: a detection curation game</h3>
-      <p>You're the solutions architect: 48 detections, a fictional retailer, a SOC that can absorb 35 alerts a day. Enable the right portfolio before the clock runs out. Built for a global enablement workshop and recreated here, scaled down, with a fictional customer.</p>
-      <span class="go">Play it →</span>
-    </a>
-    <a class="wcard" href="case-workshop.html" data-tag="delivery">
-      <p class="kicker">Case study · Program design</p>
-      <h3>Teaching judgment: a two-week workshop for security solutions architects</h3>
-      <p>Leadership wanted better custom demos and stronger POV win rates. The design answer: one fictional customer carried through every session, decision points instead of lectures, and a 4.5/5 rating across 143 responses.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-ueba.html" data-tag="delivery">
-      <p class="kicker">Case study · Content transformation</p>
-      <h3>From encyclopedia to learning experience: converting a 25-page SME brain dump</h3>
-      <p>A technically excellent but totally passive 25-page document became an 11-module micro-learning series with role-based journeys, now holding a 5-star rating with 500+ completions, and an SME who became a repeat design partner.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-roleplay.html" data-tag="delivery">
-      <p class="kicker">Case study · AI-powered learning experience design</p>
-      <h3>Building the field's AI roleplay practice system</h3>
-      <p>MindTickle shipped AI roleplay as a new capability; nobody knew what "good" looked like yet. A meta-prompt system, a designed learner experience, and a standard grading rubric took it from experiment to 377 unique learners and a 4.3/5 rating.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-src.html" data-tag="strategy">
-      <p class="kicker">Case study · Adoption &amp; change management</p>
-      <h3>Turning a platform nobody used into 100%+ adoption</h3>
-      <p>A new content platform with real capabilities sat unused while the field kept its old habits. Content, platform-level nudges, a live roadshow, and recurring reinforcement, working as one system, closed the gap.</p>
-      <span class="go">Read the case study →</span>
-    </a>
-    <a class="wcard" href="case-gtm-readiness.html" data-tag="strategy">
-      <p class="kicker">Case study · Process design</p>
-      <h3>Getting one team to a shared definition of "ready"</h3>
-      <p>No shared standard for what a release needed before it shipped. Defined tiers, defined deliverables, and a code-freeze cadence turned inconsistent launches into one coordinated motion, adopted company-wide within a cycle.</p>
-      <span class="go">Read the case study →</span>
-    </a>
   </div>
 </section>
 
