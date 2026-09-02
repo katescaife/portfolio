@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filters Lab — Interactive Practice · Kate Scaife</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,600&family=Public+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case-style.css">
+<style>
+.wrap.wide{max-width:960px}
+.lab-intro{max-width:66ch}
+.lab-badge{display:inline-flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:6px 14px;margin:4px 0 28px}
+.lab-badge span{color:var(--teal)}
+
+.lab{display:grid;grid-template-columns:200px 1fr;gap:32px;margin:8px 0 30px;align-items:start}
+@media (max-width:640px){.lab{grid-template-columns:1fr}}
+
+.steps{display:flex;flex-direction:column;gap:24px;position:sticky;top:24px}
+.step{display:flex;align-items:flex-start;gap:12px}
+.step-circle{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all .25s ease;background:transparent}
+.step-circle::before{content:attr(data-num)}
+.step.active .step-circle{border-color:var(--teal);color:var(--teal)}
+.step.done .step-circle{border-color:var(--teal);background:var(--teal);color:#fff}
+.step.done .step-circle::before{content:"\2713"}
+.step-label{font-size:14.5px;color:var(--ink-soft);padding-top:5px;transition:color .25s ease}
+.step.active .step-label,.step.done .step-label{color:var(--ink);font-weight:600}
+
+.screen-panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.scene{display:none}
+.scene.on{display:block}
+
+/* mail chrome */
+.mail-top{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper)}
+.mail-logo{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--ink)}
+.mail-logo svg{flex:none}
+.mail-search{flex:1;height:34px;border-radius:999px;background:rgba(120,120,140,.09);border:1px solid var(--line)}
+.mail-compose{font-family:"Public Sans",sans-serif;font-size:13px;font-weight:700;background:#3E6BF0;color:#fff;border:none;border-radius:20px;padding:9px 18px;cursor:pointer;flex:none}
+.mail-gear-btn{flex:none;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:border-color .15s,color .15s}
+.mail-gear-btn:hover{border-color:var(--teal);color:var(--teal)}
+.mail-gear-btn.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(62,143,145,.35)}50%{box-shadow:0 0 0 7px rgba(62,143,145,0)}}
+
+.mail-body{position:relative;min-height:340px}
+.mail-list{padding:6px 0}
+.mail-row{display:flex;align-items:center;gap:14px;padding:13px 20px;border-bottom:1px solid var(--line);cursor:default}
+.mail-row.hot{cursor:pointer}
+.mail-row.hot:hover{background:rgba(62,143,145,.07)}
+.mail-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);flex:none}
+.mail-dot.read{background:transparent}
+.mail-from{font-size:14px;font-weight:700;color:var(--ink);width:150px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mail-subject{font-size:14px;color:var(--body);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mail-time{font-size:12px;color:var(--ink-soft);flex:none}
+
+.dropdown{position:absolute;top:8px;right:16px;width:230px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 26px rgba(0,0,0,.16);overflow:hidden;z-index:5}
+.dd-item{display:block;width:100%;text-align:left;background:none;border:none;padding:12px 16px;font-family:"Public Sans",sans-serif;font-size:13.5px;color:var(--body);cursor:pointer;border-bottom:1px solid var(--line)}
+.dd-item:last-child{border-bottom:none}
+.dd-item:hover{background:rgba(62,143,145,.09);color:var(--ink)}
+.dd-item.primary{color:var(--teal);font-weight:700}
+
+.tabs-row{display:flex;flex-wrap:wrap;gap:2px;padding:16px 18px 0;border-bottom:1px solid var(--line)}
+.tab-btn{font-family:"IBM Plex Mono",monospace;font-size:12px;background:none;border:none;border-bottom:3px solid transparent;padding:10px 12px;color:var(--ink-soft);cursor:pointer}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.hot{color:var(--teal)}
+.tab-panel{padding:26px 22px}
+.tab-panel h3{font-family:"Fraunces",serif;font-size:19px;font-weight:600;margin-bottom:10px;color:var(--ink)}
+.tab-panel p.hint{color:var(--ink-soft);font-size:14px;margin-bottom:16px}
+.link-btn{font-family:"Public Sans",sans-serif;font-weight:700;font-size:14px;color:var(--teal);background:none;border:none;cursor:pointer;padding:0}
+.link-btn:hover{text-decoration:underline}
+
+.form-panel{padding:24px 22px}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.form-input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:rgba(120,120,140,.06);font-family:"Public Sans",sans-serif;font-size:14px;color:var(--ink)}
+.form-actions{display:flex;gap:10px;margin-top:20px}
+.btn{font-family:"Public Sans",sans-serif;font-size:13.5px;font-weight:700;border-radius:8px;padding:10px 18px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.btn.primary{background:#3E6BF0;border-color:#3E6BF0;color:#fff}
+.btn:hover{filter:brightness(1.05)}
+
+.check-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.check-row:last-of-type{border-bottom:none}
+.check-row input{margin-top:3px}
+.check-row .cl-label{font-size:14px;color:var(--ink)}
+.check-row .cl-sub{font-size:12.5px;color:var(--ink-soft)}
+
+.success{padding:44px 26px;text-align:center}
+.success .tick{width:56px;height:56px;border-radius:50%;background:var(--teal);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.success h3{font-family:"Fraunces",serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.success p{max-width:44ch;margin:0 auto 20px;color:var(--body)}
+
+.lab-feedback{margin:0;padding:13px 18px;border-top:1px solid var(--line);background:var(--mark-soft);font-size:13.5px;color:var(--ink);display:none}
+.lab-feedback.show{display:block}
+.lab-feedback strong{color:var(--ink)}
+
+.lab-caption{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-soft);margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap wide">
+<a class="back" href="index.html">← Kate Scaife · portfolio</a>
+<p class="eyebrow">Interactive practice · Design &amp; delivery</p>
+<h1>A filters lab, built to be broken</h1>
+<p class="meta">Original practice module · built for this portfolio</p>
+
+<p class="lab-intro">This one isn't from an employer, it's something I built to show the design approach behind my workshop and micro-learning work directly, rather than just describing it. It walks through setting up an email filter using a free, public product, so you can click the wrong thing on purpose and see what happens, the same way I design real practice.</p>
+<div class="lab-badge">Recreated interface for demonstration <span>·</span> not affiliated with Google</div>
+
+<p class="lab-intro"><strong>The task:</strong> a newsletter is burying your inbox. Set up a filter so future emails from it skip the inbox and file themselves away automatically.</p>
+
+<div class="lab">
+  <div class="steps" id="steps">
+    <div class="step" data-i="1"><div class="step-circle" data-num="1"></div><div class="step-label">Open Settings</div></div>
+    <div class="step" data-i="2"><div class="step-circle" data-num="2"></div><div class="step-label">Find Filters</div></div>
+    <div class="step" data-i="3"><div class="step-circle" data-num="3"></div><div class="step-label">Start a New Filter</div></div>
+    <div class="step" data-i="4"><div class="step-circle" data-num="4"></div><div class="step-label">Set What to Match</div></div>
+    <div class="step" data-i="5"><div class="step-circle" data-num="5"></div><div class="step-label">Choose What Happens</div></div>
+  </div>
+
+  <div>
+  <div class="screen-panel">
+
+    <!-- Scene: inbox -->
+    <div class="scene on" id="scene-inbox">
+      <div class="mail-top">
+        <div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div>
+        <button class="mail-compose" type="button">+ Compose</button>
+        <div class="mail-search"></div>
+        <button class="mail-gear-btn pulse" id="gearBtn" aria-label="Settings" title="Settings">&#9881;</button>
+      </div>
+      <div class="mail-body">
+        <div class="mail-list">
+          <div class="mail-row"><div class="mail-dot"></div><div class="mail-from">Splunk Team</div><div class="mail-subject">Your weekly usage summary is ready</div><div class="mail-time">9:14 AM</div></div>
+          <div class="mail-row"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">This week: 47 links you'll skim and never open</div><div class="mail-time">7:02 AM</div></div>
+          <div class="mail-row"><div class="mail-dot read"></div><div class="mail-from">Jordan Reyes</div><div class="mail-subject">Re: Thursday's workshop room</div><div class="mail-time">Yesterday</div></div>
+          <div class="mail-row"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">Breaking: another company raised money</div><div class="mail-time">Yesterday</div></div>
+          <div class="mail-row"><div class="mail-dot read"></div><div class="mail-from">Calendar</div><div class="mail-subject">Reminder: 1:1 with Priya at 2:00 PM</div><div class="mail-time">Tue</div></div>
+          <div class="mail-row"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">5 trends every team is ignoring</div><div class="mail-time">Mon</div></div>
+        </div>
+        <div class="dropdown" id="gearDropdown" hidden>
+          <button class="dd-item" type="button" data-decoy="theme">Theme</button>
+          <button class="dd-item" type="button" data-decoy="density">Density: Default</button>
+          <button class="dd-item primary" type="button" id="toAllSettings">See all settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene: tabs -->
+    <div class="scene" id="scene-tabs">
+      <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
+      <div class="tabs-row">
+        <button class="tab-btn" type="button" data-decoy="general">General</button>
+        <button class="tab-btn" type="button" data-decoy="labels">Labels</button>
+        <button class="tab-btn" type="button" data-decoy="inbox">Inbox</button>
+        <button class="tab-btn hot" type="button" id="toFiltersTab">Filters and Blocked Addresses</button>
+        <button class="tab-btn" type="button" data-decoy="forwarding">Forwarding and POP/IMAP</button>
+      </div>
+      <div class="tab-panel">
+        <h3>Choose a settings tab</h3>
+        <p class="hint">Where would the rule that automatically handles TechDaily's newsletter live?</p>
+      </div>
+    </div>
+
+    <!-- Scene: filters tab -->
+    <div class="scene" id="scene-filterstab">
+      <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
+      <div class="tabs-row"><button class="tab-btn hot" type="button">Filters and Blocked Addresses</button></div>
+      <div class="tab-panel">
+        <h3>No filters created yet</h3>
+        <p class="hint">Filters run automatically on incoming mail, no need to sort it by hand each time.</p>
+        <button class="link-btn" type="button" id="toCriteria">Create a new filter</button>
+      </div>
+    </div>
+
+    <!-- Scene: criteria -->
+    <div class="scene" id="scene-criteria">
+      <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
+      <div class="form-panel">
+        <h3 style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;margin-bottom:14px;color:var(--ink)">New filter</h3>
+        <div class="form-row"><label>From</label><input class="form-input" value="newsletter@techdaily.example" readonly></div>
+        <div class="form-row"><label>Subject</label><input class="form-input" placeholder="(not needed for this rule)" readonly></div>
+        <div class="form-row"><label>Has the words</label><input class="form-input" placeholder="(not needed for this rule)" readonly></div>
+        <div class="form-actions">
+          <button class="btn" type="button" data-decoy="search">Search</button>
+          <button class="btn primary" type="button" id="toActions">Create filter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene: actions -->
+    <div class="scene" id="scene-actions">
+      <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
+      <div class="form-panel">
+        <h3 style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;margin-bottom:4px;color:var(--ink)">When a matching message arrives:</h3>
+        <p class="hint">newsletter@techdaily.example</p>
+        <div class="check-row"><input type="checkbox" id="cbSkip"><label for="cbSkip"><div class="cl-label">Skip the Inbox (Archive it)</div><div class="cl-sub">Keeps it out of your main list</div></label></div>
+        <div class="check-row"><input type="checkbox" id="cbLabel"><label for="cbLabel"><div class="cl-label">Apply the label: TechDaily</div><div class="cl-sub">Files it somewhere you can still find it</div></label></div>
+        <div class="check-row"><input type="checkbox" id="cbDelete"><label for="cbDelete"><div class="cl-label">Delete it</div><div class="cl-sub">Removes it entirely, no record kept</div></label></div>
+        <div class="form-actions">
+          <button class="btn primary" type="button" id="toSuccess">Create filter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene: success -->
+    <div class="scene" id="scene-success">
+      <div class="success">
+        <div class="tick">&#10003;</div>
+        <h3>Done</h3>
+        <p>Future emails from TechDaily's newsletter will skip your inbox and file straight into the TechDaily label, out of the way, but never lost.</p>
+        <button class="btn" type="button" id="toRestart">Restart the lab</button>
+      </div>
+    </div>
+
+    <p class="lab-feedback" id="feedback"></p>
+  </div>
+  <p class="lab-caption">Click through it. Wrong turns get feedback, not a dead end.</p>
+  </div>
+</div>
+
+<h2>Why this exists</h2>
+<p>Most of the case studies on this site are proof from inside a company: things I built for a real team with real constraints. This one is different on purpose. When I couldn't show screenshots of client or employer work without permission I didn't have, I built something new instead of describing my approach in the abstract. It's a small piece, but it's real: a working decision-based interaction, not a mockup of one.</p>
+
+<footer>Kate Scaife · <a href="mailto:krscaife@gmail.com">krscaife@gmail.com</a> · <a href="index.html">Back to portfolio</a></footer>
+</div>
+
+<script>
+const MILESTONES = 5;
+let current = 1;
+
+function setMilestone(n){
+  current = n;
+  document.querySelectorAll('.step').forEach(el=>{
+    const i = parseInt(el.dataset.i,10);
+    el.classList.remove('active','done');
+    if(i < n) el.classList.add('done');
+    else if(i === n) el.classList.add('active');
+  });
+  if(n > MILESTONES){
+    document.querySelectorAll('.step').forEach(el=>el.classList.add('done'));
+  }
+}
+
+function showScene(id){
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  hideFeedback();
+}
+
+function showFeedback(html){
+  const f = document.getElementById('feedback');
+  f.innerHTML = html;
+  f.classList.add('show');
+}
+function hideFeedback(){
+  const f = document.getElementById('feedback');
+  f.classList.remove('show');
+}
+
+// Scene: inbox
+document.getElementById('gearBtn').addEventListener('click', ()=>{
+  document.getElementById('gearBtn').classList.remove('pulse');
+  document.getElementById('gearDropdown').hidden = false;
+});
+document.querySelector('.mail-compose').addEventListener('click', ()=>{
+  showFeedback('<strong>Not quite.</strong> Compose starts a brand new email, it won\'t help with mail that\'s already arriving. Look for the settings icon instead.');
+});
+document.querySelectorAll('#gearDropdown [data-decoy]').forEach(b=>{
+  b.addEventListener('click', ()=> showFeedback('<strong>That\'s a real option</strong>, but it won\'t get you to filters. Try "See all settings."'));
+});
+document.getElementById('toAllSettings').addEventListener('click', ()=>{
+  setMilestone(2);
+  showScene('scene-tabs');
+});
+
+// Scene: tabs
+document.querySelectorAll('#scene-tabs [data-decoy]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    if(b.dataset.decoy === 'labels'){
+      showFeedback('<strong>Close, but no.</strong> Labels help you tag and organize mail you keep, they don\'t create automatic rules. Filters live in their own tab.');
+    } else {
+      showFeedback('<strong>Not this one.</strong> That tab won\'t set up an automatic rule for incoming mail.');
+    }
+  });
+});
+document.getElementById('toFiltersTab').addEventListener('click', ()=>{
+  setMilestone(3);
+  showScene('scene-filterstab');
+});
+
+// Scene: filters tab
+document.getElementById('toCriteria').addEventListener('click', ()=>{
+  setMilestone(4);
+  showScene('scene-criteria');
+});
+
+// Scene: criteria
+document.querySelector('#scene-criteria [data-decoy="search"]').addEventListener('click', ()=>{
+  showFeedback('<strong>Search would just show matching mail right now.</strong> To build the ongoing rule, use "Create filter."');
+});
+document.getElementById('toActions').addEventListener('click', ()=>{
+  setMilestone(5);
+  showScene('scene-actions');
+});
+
+// Scene: actions
+document.getElementById('toSuccess').addEventListener('click', ()=>{
+  const skip = document.getElementById('cbSkip').checked;
+  const label = document.getElementById('cbLabel').checked;
+  const del = document.getElementById('cbDelete').checked;
+  if(del){
+    showFeedback('<strong>That deletes it outright.</strong> The goal is to get it out of the way, not lose it. Try skipping the inbox and applying a label instead.');
+    return;
+  }
+  if(!skip || !label){
+    showFeedback('<strong>Almost.</strong> You\'ll want both: skip the inbox so it stops interrupting you, and apply a label so it\'s still easy to find later.');
+    return;
+  }
+  setMilestone(6);
+  showScene('scene-success');
+});
+
+document.getElementById('toRestart').addEventListener('click', ()=>{
+  document.getElementById('cbSkip').checked = false;
+  document.getElementById('cbLabel').checked = false;
+  document.getElementById('cbDelete').checked = false;
+  document.getElementById('gearDropdown').hidden = true;
+  document.getElementById('gearBtn').classList.add('pulse');
+  setMilestone(1);
+  showScene('scene-inbox');
+});
+
+setMilestone(1);
+</script>
+</body>
+</html>
