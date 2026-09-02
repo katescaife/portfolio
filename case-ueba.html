@@ -129,25 +129,6 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-const STAGES = [
- {t:"Ingestion", what:"Raw activity logs (identity, endpoint, network, application) flow into the pipeline from their sources.", why:"The model can only baseline behavior it can see. Gaps at this stage don't error out; they become silent blind spots downstream.", watch:"If events stop appearing, verify the forwarder's output configuration before questioning the analytics, the most common failure is the plumbing, not the math."},
- {t:"Normalization", what:"Events are parsed into a common schema: who did what, where, and when.", why:"Behavioral analytics compares actions across wildly different sources. Mismatched fields mean broken comparisons.", watch:"A newly added log source with unmapped fields will quietly degrade detections rather than announce itself. Validate mappings when anything new comes online."},
- {t:"Behavioral baselines", what:"Batch processing computes each user's and entity's normal: typical hours, hosts, data volumes, peer group behavior.", why:"\"Unusual\" only means something relative to normal. This stage is the definition of normal.", watch:"Baselines need a training window. Judging alert quality on day two means judging a model that hasn't met your users yet."},
- {t:"Real-time detection", what:"Incoming events are scored against baselines and rules as they arrive; anomalies become findings.", why:"This is where analytics turns into action, and where speed matters for containment.", watch:"Threshold tuning here is a judgment call, not a setting: every notch trades missed signal against analyst fatigue. Decide with the SOC, not for them."},
- {t:"Risk index", what:"Findings aggregate into an entity risk score that rises with corroborating evidence and decays over time.", why:"A single anomaly is noise; a pattern of findings is a story. The score tells analysts where to look first.", watch:"Customers trust the score only if they can see why it moved. A number without a narrative erodes confidence. Always be able to tell the story behind the spike."}
-];
-const nodes = document.querySelectorAll('.hspot');
-const detail = document.getElementById('nodeDetail');
-nodes.forEach(btn => btn.addEventListener('click', () => {
-  nodes.forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const s = STAGES[+btn.dataset.i];
-  detail.innerHTML = '<p class="nd-title">' + s.t + '</p>' +
-    '<div class="nd-block"><span class="nd-label">What it is</span><p>' + s.what + '</p></div>' +
-    '<div class="nd-block"><span class="nd-label">Why it matters</span><p>' + s.why + '</p></div>' +
-    '<div class="nd-watch">⚠ <strong>Watch for:</strong> ' + s.watch + '</div>';
-}));
-</script>
 
 <h2>An honest note on tooling</h2>
 <p>The series was built in Articulate Rise. Nothing technically groundbreaking, and honestly, that's the point. The transformation was <span class="mark">information architecture and sequencing</span>: deciding what the doc should stop trying to do, supporting the building of mental models, and connecting every technical fact to a field conversation. The tool was incidental.</p>
