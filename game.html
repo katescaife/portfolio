@@ -111,23 +111,23 @@ footer a{color:var(--amber)}
     <button class="xclose" onclick="document.getElementById('mRules').classList.add('hidden')" aria-label="Close and browse the board">×</button>
     <p class="kick">A learning game by Kate Scaife</p>
     <h2>Signal <em>&amp;</em> Noise</h2>
-    <p><strong>Your job:</strong> you're the detection engineer on a new security deployment. From a catalog of 48 detections, enable the set that best protects <strong>this specific customer</strong>, before the clock runs out.</p>
+    <p><strong>Your job:</strong> you're the detection engineer on a new security deployment. From a catalog of 48 detections, enable the set that best protects <strong>this specific company</strong>, before the clock runs out.</p>
     <div class="rules">
-      <div><span class="n">01</span><span>Every detection has a hidden point value based on fit for this customer, strong fits score high, poor fits score negative.</span></div>
-      <div><span class="n">02</span><span>Every detection also generates an estimated <strong>alert load</strong>. The customer's SOC can absorb <strong>35 alerts/day</strong>. Exceed it and your score bleeds. Watch the meter.</span></div>
+      <div><span class="n">01</span><span>Every detection has a hidden point value based on fit for this company, strong fits score high, poor fits score negative.</span></div>
+      <div><span class="n">02</span><span>Every detection also generates an estimated <strong>alert load</strong>. The company's SOC can absorb <strong>35 alerts/day</strong>. Exceed it and your score bleeds. Watch the meter.</span></div>
       <div><span class="n">03</span><span>Your final score is multiplied by your <strong>precision</strong>, good picks ÷ total picks. Shotgunning dilutes itself.</span></div>
       <div><span class="n">04</span><span>Results are graded against the <strong>best achievable portfolio of detections</strong>, so your percentage means something.</span></div>
     </div>
     <p>More detections ≠ better security. Curate.</p>
-    <div class="foot"><button class="btn" onclick="showBriefing()">Read the customer briefing</button></div>
+    <div class="foot"><button class="btn" onclick="showBriefing()">Read the company briefing</button></div>
   </div>
 </div>
 
-<!-- ===== CUSTOMER BRIEFING ===== -->
+<!-- ===== COMPANY BRIEFING ===== -->
 <div class="modal hidden" id="mBrief">
   <div class="sheet">
     <button class="xclose" onclick="document.getElementById('mBrief').classList.add('hidden')" aria-label="Close and browse the board">×</button>
-    <p class="kick">Customer briefing</p>
+    <p class="kick">Company briefing</p>
     <h2>Lantern <em>&amp;</em> Loom Home Goods</h2>
     <p>A fictional mid-market retailer: 70 stores plus a fast-growing e-commerce business. Read carefully, every scoring decision traces back to this profile.</p>
     <div class="profile">
@@ -196,7 +196,7 @@ footer a{color:var(--amber)}
 </main>
 
 <footer class="wrap">
-  <p>A portfolio rebuild by <a href="index.html">Kate Scaife</a>. Fictional customer, original detection set, revised scoring. Scaled down from a version designed for a global enablement workshop; the customer, detection set, and scoring here were built fresh for this portfolio.</p>
+  <p>A portfolio rebuild by <a href="index.html">Kate Scaife</a>. Fictional company, original detection set, revised scoring. Scaled down from a version designed for a global enablement workshop; the company, detection set, and scoring here were built fresh for this portfolio.</p>
 </footer>
 
 <script>
@@ -204,7 +204,7 @@ footer a{color:var(--amber)}
 const D = [
 // CRITICAL +15
 ["Checkout page JavaScript integrity change","Collection","H","Unauthorized script modification on payment pages, classic web-skimming (Magecart) indicator.",1,15,"Their #1 stated threat. E-commerce is 40% of revenue and PCI DSS applies. Low volume, catastrophic if missed."],
-["POS memory-scraping behavior","Collection","H","Process reading track data patterns from memory on POS terminals.",1,15,"POS malware is a top concern with a Windows POS fleet in 70 stores. Exactly what this customer must catch."],
+["POS memory-scraping behavior","Collection","H","Process reading track data patterns from memory on POS terminals.",1,15,"POS malware is a top concern with a Windows POS fleet in 70 stores. Exactly what this company must catch."],
 ["Mass file encryption burst","Impact","H","Hundreds of files encrypted in minutes on a single host.",1,15,"Ransomware is a stated top concern. Low-noise, high-severity behavioral signal."],
 ["EDR sensor disabled or uninstalled","Defense Evasion","H","CrowdStrike sensor stopped, disabled, or removed from an endpoint.",2,15,"They run CrowdStrike; attackers kill the sensor first. Cheap in alerts, essential in coverage."],
 ["AWS root account console login","Initial Access","H","Any interactive login to the AWS root account.",1,15,"Their platform lives on AWS. Root logins should be near-zero; each one deserves eyes."],
@@ -355,7 +355,7 @@ function submitGame(){
   const final = Math.max(0, Math.round(raw * prec));
   const pct = Math.round(final/OPTIMAL*100);
   const grade = pct>=90?'S':pct>=75?'A':pct>=55?'B':'C';
-  const verdicts = {S:'Surgical. This is senior-detection engineer curation.',A:'Strong portfolio; a real SOC could live with this.',B:'Solid instincts with some noise or gaps to trim.',C:'Room to grow: revisit the customer briefing and try again.'};
+  const verdicts = {S:'Surgical. This is senior-detection engineer curation.',A:'Strong portfolio; a real SOC could live with this.',B:'Solid instincts with some noise or gaps to trim.',C:'Room to grow: revisit the company briefing and try again.'};
 
   document.getElementById('rGrade').textContent = grade;
   document.getElementById('rPct').textContent = pct;
@@ -370,7 +370,7 @@ function submitGame(){
   const traps = [...enabled].filter(i=>D[i][5]===-10).length;
   const noisy = [...enabled].filter(i=>D[i][5]===-5).length;
   let lesson;
-  if(traps) lesson = `You enabled ${traps} detection${traps>1?'s':''} for technology this customer doesn't run. The most expensive mistakes in a real engagement are the ones that reveal you didn't read the environment.`;
+  if(traps) lesson = `You enabled ${traps} detection${traps>1?'s':''} for technology this company doesn't run. The most expensive mistakes in a real engagement are the ones that reveal you didn't read the environment.`;
   else if(over) lesson = `Every point you scored, an overwhelmed 4-person SOC has to live with. You gave them ${l} alerts a day against a capacity of ${BUDGET}. In the real world, they'd start ignoring the queue, including your best detections.`;
   else if(noisy) lesson = `No traps and within budget, but ${noisy} noisy pick${noisy>1?'s':''} diluted your precision. Ask of every detection: who triages this at 2pm on Black Friday?`;
   else if(pct>=90) lesson = `You read the environment, respected the SOC's capacity, and picked signals over thresholds. That's the whole lesson: coverage is a budget you spend, not a checklist you complete.`;
