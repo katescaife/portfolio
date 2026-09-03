@@ -23,7 +23,7 @@
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --ink:#EDE9F5;
+      --ink:#EDE9F5; f
       --ink-soft:#A79FC2;
       --paper:#221C36;
       --card:#2C2547;
@@ -97,6 +97,10 @@
   .samples-to-work{display:flex;align-items:center;gap:16px;margin:56px 0 34px;color:var(--ink-soft);font-size:14px}
   .samples-to-work::before,.samples-to-work::after{content:"";height:1px;background:var(--line);flex:1}
 
+  @media (min-width:640px){
+  .work{grid-template-columns:1fr 1fr}
+}
+  
   /* dark console — deep purple */
   .console{margin:0;background:var(--dark);color:#EAE6F2;border-radius:14px;padding:34px 30px 30px;position:relative;overflow:hidden}
   .console::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--lav),var(--teal))}
