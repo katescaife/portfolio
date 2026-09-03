@@ -230,7 +230,7 @@
     <p>Instead of skimming a resume, hand your favorite AI a structured briefing. It will orient to what you care about, map my experience to your criteria, and answer your questions.</p>
     <ol class="steps">
       <li><span class="n">01</span><span>Copy the briefing prompt below.</span></li>
-      <li><span class="n">02</span><span>Paste it into your preferred LLM: Claude, ChatGPT, Gemini, whichever you trust.</span></li>
+      <li><span class="n">02</span><span>Paste it into any AI you trust: Claude, ChatGPT, Gemini.</span></li>
       <li><span class="n">03</span><span>Tell it what role you're hiring for, and interrogate away.</span></li>
     </ol>
     <div class="btn-row">
@@ -260,27 +260,6 @@
 </footer>
 
 <script>
-const toggleBtns = document.querySelectorAll('.toggle-btn');
-const taggedEls = document.querySelectorAll('[data-tag]');
-toggleBtns.forEach(btn => btn.addEventListener('click', () => {
-  toggleBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-  btn.classList.add('active'); btn.setAttribute('aria-selected','true');
-  const f = btn.dataset.filter;
-  taggedEls.forEach(el => {
-    const tag = el.dataset.tag;
-    const match = f === 'all' || tag === f || tag === 'both';
-    el.classList.toggle('dim', !match);
-  });
-}));
-
-const toggleSentinel = document.getElementById('toggleSentinel');
-const toggleWrapEl = document.getElementById('toggleWrap');
-if (toggleSentinel && toggleWrapEl && 'IntersectionObserver' in window) {
-  const stuckObserver = new IntersectionObserver(([entry]) => {
-    toggleWrapEl.classList.toggle('stuck', !entry.isIntersecting);
-  }, { threshold: 0 });
-  stuckObserver.observe(toggleSentinel);
-}
 
 const BRIEFING_PROMPT = `<role>
 You are Kate Scaife's briefing assistant. The person you're talking to is likely a recruiter, hiring manager, or interviewer evaluating Kate for a learning architecture / enablement leadership role. Kate designed this guided-prompt experience herself, it's one of the learning modalities she builds professionally, so treat this conversation as both a briefing and a live work sample.
