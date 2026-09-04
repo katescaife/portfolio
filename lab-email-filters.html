@@ -79,6 +79,21 @@
 .lab-feedback.show{display:block}
 .lab-feedback strong{color:var(--ink)}
 .lab-caption{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-soft);margin-top:12px}
+.mail-modal-overlay{position:fixed;inset:0;background:rgba(20,16,32,.45);z-index:50;padding:20px;display:none;align-items:center;justify-content:center}
+.mail-modal-overlay.show{display:flex}
+.mail-modal{background:var(--paper);border-radius:16px;max-width:460px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.28);padding:22px 24px;position:relative;max-height:85vh;overflow:auto}
+.mail-modal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.mail-modal-from{font-size:14px;font-weight:700;color:var(--ink)}
+.mail-modal-addr{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);margin-top:2px}
+.mail-modal-close{background:none;border:none;font-size:20px;line-height:1;cursor:pointer;color:var(--ink-soft);padding:2px 6px;flex:none}
+.mail-modal-close:hover{color:var(--ink)}
+.mail-modal-subject{font-family:"Fraunces",serif;font-weight:600;font-size:18px;margin:8px 0 14px;color:var(--ink)}
+.mail-modal-body{font-size:14px;color:var(--body);line-height:1.6}
+.mail-modal-body p{margin:0 0 10px}
+.mail-modal-actions{display:flex;align-items:center;gap:12px;margin-top:16px}
+.copy-confirm{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--teal);opacity:0;transition:opacity .2s}
+.copy-confirm.show{opacity:1}
+.mail-modal-hint{font-size:12.5px;color:var(--ink-soft);margin-top:14px}
 </style>
 </head>
 <body>
@@ -111,17 +126,40 @@
       <div class="mail-body">
         <div class="mail-list">
           <div class="mail-row"><div class="mail-dot"></div><div class="mail-from">Workspace Insights</div><div class="mail-subject">Your weekly usage summary is ready</div><div class="mail-time">9:14 AM</div></div>
-          <div class="mail-row"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">This week: 47 links you'll skim and never open</div><div class="mail-time">7:02 AM</div></div>
+          <div class="mail-row hot" data-newsletter data-subject="This week: 47 links you&#39;ll skim and never open"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">This week: 47 links you'll skim and never open</div><div class="mail-time">7:02 AM</div></div>
           <div class="mail-row"><div class="mail-dot read"></div><div class="mail-from">Jordan Reyes</div><div class="mail-subject">Re: Thursday's workshop room</div><div class="mail-time">Yesterday</div></div>
-          <div class="mail-row"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">Breaking: another company raised money</div><div class="mail-time">Yesterday</div></div>
+          <div class="mail-row hot" data-newsletter data-subject="Breaking: another company raised money"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">Breaking: another company raised money</div><div class="mail-time">Yesterday</div></div>
           <div class="mail-row"><div class="mail-dot read"></div><div class="mail-from">Calendar</div><div class="mail-subject">Reminder: 1:1 with Priya at 2:00 PM</div><div class="mail-time">Tue</div></div>
-          <div class="mail-row"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">5 trends every team is ignoring</div><div class="mail-time">Mon</div></div>
+          <div class="mail-row hot" data-newsletter data-subject="5 trends every team is ignoring"><div class="mail-dot"></div><div class="mail-from">TechDaily Newsletter</div><div class="mail-subject">5 trends every team is ignoring</div><div class="mail-time">Mon</div></div>
         </div>
         <div class="dropdown" id="gearDropdown" hidden>
           <button class="dd-item" type="button" data-decoy="theme">Theme</button>
           <button class="dd-item" type="button" data-decoy="density">Density: Default</button>
           <button class="dd-item primary" type="button" id="toAllSettings">See all settings</button>
         </div>
+      </div>
+    </div>
+    <!-- Newsletter modal -->
+    <div class="mail-modal-overlay" id="mailModalOverlay">
+      <div class="mail-modal" role="dialog" aria-modal="true" aria-labelledby="mailModalSubject">
+        <div class="mail-modal-top">
+          <div>
+            <div class="mail-modal-from">TechDaily Newsletter</div>
+            <div class="mail-modal-addr">&lt;newsletter@techdaily.example&gt;</div>
+          </div>
+          <button class="mail-modal-close" id="mailModalClose" type="button" aria-label="Close">&times;</button>
+        </div>
+        <h3 class="mail-modal-subject" id="mailModalSubject">This week: 47 links you'll skim and never open</h3>
+        <div class="mail-modal-body">
+          <p>Hey there,</p>
+          <p>Another week, another pile of tabs you'll open and never finish. Here's what everyone's pretending to have read.</p>
+          <p>&mdash; The TechDaily team</p>
+        </div>
+        <div class="mail-modal-actions">
+          <button class="btn primary" id="copySenderBtn" type="button">Copy sender address</button>
+          <span class="copy-confirm" id="copyConfirm">Copied</span>
+        </div>
+        <p class="mail-modal-hint">You'll need this address to set up the filter. Copy it, then head to Settings.</p>
       </div>
     </div>
     <!-- Scene: tabs -->
@@ -154,7 +192,7 @@
       <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
       <div class="form-panel">
         <h3 style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;margin-bottom:14px;color:var(--ink)">New filter</h3>
-        <div class="form-row"><label>From</label><input class="form-input" value="newsletter@techdaily.example" readonly></div>
+        <div class="form-row"><label>From</label><input class="form-input" id="fromInput" placeholder="Paste the sender's address here"></div>
         <div class="form-row"><label>Subject</label><input class="form-input" placeholder="(not needed for this rule)" readonly></div>
         <div class="form-row"><label>Has the words</label><input class="form-input" placeholder="(not needed for this rule)" readonly></div>
         <div class="form-actions">
@@ -168,7 +206,7 @@
       <div class="mail-top"><div class="mail-logo"><svg width="18" height="14" viewBox="0 0 24 18" fill="none"><rect x="1" y="1" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 2L12 11L22 2" stroke="currentColor" stroke-width="1.6"/></svg>Mail</div></div>
       <div class="form-panel">
         <h3 style="font-family:'Fraunces',serif;font-weight:600;font-size:19px;margin-bottom:4px;color:var(--ink)">When a matching message arrives:</h3>
-        <p class="hint">newsletter@techdaily.example</p>
+        <p class="hint" id="actionsFromHint">newsletter@techdaily.example</p>
         <div class="check-row"><input type="checkbox" id="cbSkip"><label for="cbSkip"><div class="cl-label">Skip the Inbox (Archive it)</div><div class="cl-sub">Keeps it out of your main list</div></label></div>
         <div class="check-row"><input type="checkbox" id="cbLabel"><label for="cbLabel"><div class="cl-label">Apply the label: TechDaily</div><div class="cl-sub">Files it somewhere you can still find it</div></label></div>
         <div class="check-row"><input type="checkbox" id="cbDelete"><label for="cbDelete"><div class="cl-label">Delete it</div><div class="cl-sub">Removes it entirely, no record kept</div></label></div>
@@ -224,6 +262,54 @@ function hideFeedback(){
   const f = document.getElementById('feedback');
   f.classList.remove('show');
 }
+const SENDER_ADDRESS = 'newsletter@techdaily.example';
+// Newsletter modal
+const mailModalOverlay = document.getElementById('mailModalOverlay');
+const mailModalSubject = document.getElementById('mailModalSubject');
+const copySenderBtn = document.getElementById('copySenderBtn');
+const copyConfirm = document.getElementById('copyConfirm');
+function openMailModal(row){
+  mailModalSubject.textContent = row.dataset.subject;
+  mailModalOverlay.classList.add('show');
+}
+function closeMailModal(){
+  mailModalOverlay.classList.remove('show');
+  copyConfirm.classList.remove('show');
+}
+document.querySelectorAll('.mail-row[data-newsletter]').forEach(row=>{
+  row.addEventListener('click', ()=> openMailModal(row));
+});
+document.getElementById('mailModalClose').addEventListener('click', closeMailModal);
+mailModalOverlay.addEventListener('click', (e)=>{
+  if(e.target === mailModalOverlay) closeMailModal();
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && mailModalOverlay.classList.contains('show')) closeMailModal();
+});
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try{ document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(ta);
+}
+copySenderBtn.addEventListener('click', ()=>{
+  const flash = ()=>{
+    copyConfirm.classList.add('show');
+    clearTimeout(copySenderBtn._t);
+    copySenderBtn._t = setTimeout(()=> copyConfirm.classList.remove('show'), 2200);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(SENDER_ADDRESS).then(flash).catch(()=>{ fallbackCopy(SENDER_ADDRESS); flash(); });
+  } else {
+    fallbackCopy(SENDER_ADDRESS);
+    flash();
+  }
+});
 // Scene: inbox
 document.getElementById('gearBtn').addEventListener('click', ()=>{
   document.getElementById('gearBtn').classList.remove('pulse');
@@ -263,6 +349,17 @@ document.querySelector('#scene-criteria [data-decoy="search"]').addEventListener
   showFeedback('<strong>Search would just show matching mail right now.</strong> To build the ongoing rule, use "Create filter."');
 });
 document.getElementById('toActions').addEventListener('click', ()=>{
+  const fromInput = document.getElementById('fromInput');
+  const val = fromInput.value.trim();
+  if(!val){
+    showFeedback('<strong>The From field is empty.</strong> Open the TechDaily newsletter back in your inbox, copy its sender address, then paste it in here.');
+    return;
+  }
+  if(val.toLowerCase() !== SENDER_ADDRESS){
+    showFeedback('<strong>That address doesn\'t match the newsletter\'s.</strong> Double-check what you pasted, a small typo here means the filter won\'t catch anything.');
+    return;
+  }
+  document.getElementById('actionsFromHint').textContent = val;
   setMilestone(5);
   showScene('scene-actions');
 });
@@ -288,6 +385,8 @@ document.getElementById('toRestart').addEventListener('click', ()=>{
   document.getElementById('cbDelete').checked = false;
   document.getElementById('gearDropdown').hidden = true;
   document.getElementById('gearBtn').classList.add('pulse');
+  document.getElementById('fromInput').value = '';
+  closeMailModal();
   setMilestone(1);
   showScene('scene-inbox');
 });
